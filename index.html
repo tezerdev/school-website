@@ -1177,7 +1177,12 @@ setInterval(nextSlide,4000);
 
 function downloadFile(){
   const link = document.createElement('a');
-  link.href = 'school-portfolio/school-profile.pdf';
+  function downloadFile() {
+  window.open(
+    "https://tezerdev.github.io/school-website/school-portfolio/school-profile.pdf",
+    "_blank"
+  );
+}
   link.download = 'Uchkuprik IM portfolio';
   link.click();
 }
