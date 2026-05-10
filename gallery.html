@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Galereya - Uchko'prik IM</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif
+}
+body{
+    background:#d9dade;
+    color:#111827
+}
+.container{
+  width:85%;              
+  max-width:1700px;     
+  margin:auto;
+  padding:0;
+}
+
+/* NAVBAR */
+.navbar{
+  position:fixed;
+  top:0px;
+  left:50%;
+  transform:translateX(-50%);
+
+  width:85%;                
+  max-width:1700px;  
+  margin: 0 auto;        
+
+  z-index:9999;
+  background:#f6f6f6;
+  padding:14px 24px;
+  border-radius:0 0 24px 24px;
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  box-shadow:0 8px 18px rgba(0,0,0,.06);
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:16px;
+font-weight:700;
+white-space:nowrap;
+flex-shrink:0;
+}
+.logo img{
+  width:34px;
+  height:34px
+}
+
+.right{display:flex;gap:10px;position:relative}
+
+.btn{
+width:44px;height:44px;border:none;border-radius:14px;
+background:#fff;cursor:pointer;display:flex;
+align-items:center;justify-content:center;
+position:relative;font-size:18px;transition:.25s
+}
+
+.btn:hover{
+transform:translateY(-2px);
+box-shadow:0 10px 22px rgba(0,0,0,.10)
+}
+
+.lang-box{width:56px}
+.lang-box span{display:none}
+.lang-box::before{content:"🌐";font-size:18px}
+
+
+.menu-line{
+position:absolute;width:22px;height:3px;background:#111;
+border-radius:10px;transition:.3s
+}
+.menu-line:nth-child(1){transform:translateY(-7px)}
+.menu-line:nth-child(2){transform:translateY(0)}
+.menu-line:nth-child(3){transform:translateY(7px)}
+
+#menuBtn.active .menu-line:nth-child(1){transform:rotate(45deg)}
+#menuBtn.active .menu-line:nth-child(2){opacity:0}
+#menuBtn.active .menu-line:nth-child(3){transform:rotate(-45deg)}
+
+
+.dropdown{
+position:absolute;
+top:54px;
+right:0;
+width:180px;
+background:#fff;
+border-radius:16px;
+box-shadow:0 12px 30px rgba(0,0,0,.12);
+overflow:hidden;
+opacity:0;
+visibility:hidden;
+transform:translateY(-12px) scale(.94);
+transition:.28s;
+z-index:999
+}
+
+.dropdown.show{
+opacity:1;
+visibility:visible;
+transform:translateY(0) scale(1)
+}
+
+.dropdown a{
+display:block;
+padding:14px 18px;
+text-decoration:none;
+color:#111;
+font-size:15px;
+cursor:pointer;
+border-bottom:1px solid #f2f2f2;
+transition:.2s
+}
+
+.dropdown a:hover{
+background:#f8f8f8;
+padding-left:24px
+}
+
+#langMenu{right:54px}
+
+.content{margin-top:100px}
+
+.card,.section{
+background:#fff;
+border-radius:22px;
+padding:18px;
+margin-bottom:14px
+}
+
+.card-head,.section-head{
+display:flex;
+justify-content:space-between;
+align-items:center
+}
+
+.badge{
+background:#f0f0f0;
+padding:6px 12px;
+border-radius:16px;
+font-size:12px;
+color:#777
+}
+
+.sub{
+margin-top:10px;
+font-size:14px;
+line-height:1.5;
+color:#888
+}
+
+.section-head{
+cursor:pointer;
+font-weight:700;
+font-size:16px
+}
+
+.left{
+display:flex;
+align-items:center;
+gap:10px
+}
+
+.arrow{
+font-size:18px;
+color:#777
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+margin-top:14px;
+max-height:3000px;
+overflow:hidden;
+transition:.35s
+}
+
+.grid.closed{
+max-height:0;
+margin-top:0
+}
+
+
+.photo{
+position:relative;
+overflow:hidden;
+border-radius:14px;
+cursor:pointer
+}
+
+.photo img{
+width:100%;
+height:150px;
+object-fit:cover;
+display:block;
+transition:.35s
+}
+
+.photo::after{
+content:"";
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%) scale(.6);
+
+width:56px;
+height:56px;
+
+background:
+rgba(255,255,255,.88)
+url("./images/zoom-in.svg")
+center center / 26px 26px no-repeat;
+
+border-radius:50%;
+
+opacity:0;
+transition:.28s ease;
+box-shadow:0 8px 18px rgba(0,0,0,.12);
+}
+
+.photo:hover::after{
+opacity:1;
+transform:translate(-50%,-50%) scale(1);
+}
+
+.photo:hover img{
+transform:scale(1.08);
+filter:brightness(.75)
+}
+
+
+.viewer{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.82);
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:99999;
+opacity:0;
+visibility:hidden;
+transition:.25s
+}
+
+.viewer.show{
+opacity:1;
+visibility:visible
+}
+
+.viewer img{
+max-width:92%;
+max-height:90%;
+border-radius:18px;
+box-shadow:0 20px 60px rgba(0,0,0,.45)
+}
+
+
+.lang-box{
+width:auto;
+padding:0 16px;
+gap:8px
+}
+
+.lang-box span{
+font-size:16px;
+font-weight:700
+}
+
+@media(max-width:950px){
+
+.logo{
+font-size:15px;
+gap:8px;
+}
+
+.logo img{
+width:30px;
+height:30px;
+}
+
+}
+
+@media(min-width:951px){
+
+.lang-box{
+width:auto;
+padding:0 16px;
+gap:8px;
+}
+
+.lang-box span{
+display:block;
+font-size:16px;
+font-weight:700;
+}
+
+}
+
+.lang-box::after{
+content:"▼";
+font-size:11px;
+margin-left:4px
+}
+
+.grid{
+grid-template-columns:repeat(3,1fr);
+gap:12px
+}
+
+.photo img{
+height:240px
+}
+
+
+
+.footer{
+  width:100%;          
+  max-width:1700px;
+  margin:40px auto;
+}
+
+.footer-inner{
+  max-width:100% !important;
+  background:#cfd0d5;
+  border-radius:24px;
+  padding:50px 70px !important;
+  border:2px solid rgba(255,255,255,0.5);
+
+  display:flex;
+  flex-direction:column;
+  gap:30px;
+
+  align-items:center;
+  text-align:center;
+}
+
+
+.foot-left{
+    margin-top: 50px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+}
+
+.footer-top{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  justify-content:center;
+}
+
+.footer-logo{
+  width:80px;
+  opacity:.6;
+}
+
+.icons{
+  display:flex;
+  gap:10px;
+}
+
+.icons span{
+  width:40px;
+  height:40px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+}
+
+.icons img{
+  width:24px;
+  height:24px;
+}
+
+.copy{font-weight:600;}
+.mini{font-size:12px;opacity:.7;}
+
+.foot-mid{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  align-items:center;
+}
+
+.foot-mid p{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  justify-content:center;
+}
+
+.foot-mid img{
+  width:18px;
+}
+
+
+.foot-right{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  align-items:center;
+}
+
+.foot-right a{
+  text-decoration:none;
+  color:#111;
+}
+
+@media(max-width:950px){
+  .foot-mid{order:1;}
+  .foot-right{order:2;}
+  .foot-left{order:3;}
+}
+
+
+@media(min-width:951px){
+
+.foot-left{
+  flex:0 0 30%;
+  align-items:flex-start;
+  text-align:left;
+}
+
+.footer-top{
+  justify-content:flex-start;
+}
+
+
+.foot-right-wrap{
+  flex:0 0 70%;
+  display:flex;
+  justify-content:flex-end;
+  gap:80px;
+}
+
+
+.foot-mid,
+.foot-right{
+  align-items:flex-start;
+  text-align:left;
+}
+
+.foot-mid p{
+  justify-content:flex-start;
+}
+
+}
+
+@media(min-width:951px){
+
+.footer-inner{
+  display:flex !important;
+  flex-direction:row !important;
+  justify-content:space-between !important;
+  align-items:flex-start !important;
+}
+
+
+.foot-left{
+  width:30% !important;
+  align-items:flex-start !important;
+  text-align:left !important;
+}
+
+
+.foot-right-wrap{
+  width:70% !important;
+  display:flex !important;
+  flex-direction:row !important;
+  justify-content:flex-end !important;
+  gap:80px !important;
+}
+
+.foot-mid,
+.foot-right{
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:flex-start !important;
+  text-align:left !important;
+}
+
+
+.foot-mid p{
+  display:flex !important;
+  justify-content:flex-start !important;
+  align-items:center;
+  gap:8px;
+}
+
+
+.footer-inner{
+  padding:50px 60px !important;
+}
+
+
+.foot-mid{
+  gap:10px;
+}
+
+.foot-mid h3{
+  margin-bottom:12px;
+}
+
+.foot-mid p{
+  margin:6px 0;
+}
+
+
+.foot-right{
+  gap:8px;
+}
+
+.foot-right h3{
+  margin-bottom:12px;
+}
+
+.foot-right a{
+  margin:4px 0;
+}
+
+
+.foot-left{
+  gap:16px;
+}
+
+.footer-top{
+  gap:14px;
+  margin-bottom:10px;
+}
+
+
+.icons{
+  gap:12px;
+}
+
+
+.copy{
+  margin-top:6px;
+}
+
+.mini{
+  margin-top:4px;
+}
+
+
+}
+@media(max-width:950px){
+
+
+.footer-inner{
+  padding:40px 20px !important;
+  gap:20px;
+}
+
+
+.foot-mid{
+  margin-bottom:20px; 
+}
+
+.foot-mid h3{
+  margin-bottom:10px;
+}
+
+.foot-mid p{
+  margin:6px 0; 
+}
+
+
+.foot-right{
+  margin-bottom:25px;
+}
+
+.foot-right h3{
+  margin-bottom:10px;
+}
+
+.foot-right a{
+  margin:4px 0;
+}
+
+
+.foot-left{
+  margin-top:20px; 
+}
+
+.footer-top{
+  justify-content:center;
+  gap:12px;
+  margin-bottom:10px;
+}
+
+/* iconlar ajralmasin */
+.icons{
+  justify-content:center;
+}
+
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="navbar">
+
+<div class="logo">
+<img src="./images/logo.png">
+<span>Uchko'prik IM</span>
+</div>
+
+<div class="right">
+
+<div class="btn lang-box" onclick="toggleLang(event)">
+<span id="currentLang">O'zbek</span>
+
+<div class="dropdown" id="langMenu">
+<a onclick="setLang('uz')">O'zbek</a>
+<a onclick="setLang('ru')">Русский</a>
+<a onclick="setLang('en')">English</a>
+</div>
+</div>
+
+<div class="btn" id="menuBtn" onclick="toggleMenu(event)">
+<span class="menu-line"></span>
+<span class="menu-line"></span>
+<span class="menu-line"></span>
+</div>
+
+<div class="dropdown" id="mainMenu">
+<a href="school-website.html" id="homeText">Asosiy</a>
+<a href="gallery.html">Galereya</a>
+<a href="#">SAT</a>
+<a href="#">Yangiliklar</a>
+<a href="#">Yutuqlarimiz</a>
+<a href="#">Qabul</a>
+</div>
+
+</div>
+</div>
+
+<div class="content">
+
+<div class="card">
+<div class="card-head">
+<h2 id="pageTitle">Galereya</h2>
+<div class="badge">24 rasm</div>
+</div>
+<p class="sub" id="pageSub">Maktab hayotining eng yorqin lahzalari</p>
+</div>
+
+<!-- SECTION 1 -->
+<div class="section">
+<div class="section-head" onclick="toggleBox('g1',this)">
+<div class="left">
+<span>🏫</span>
+<span id="campusText">Kampus suratlari</span>
+<div class="badge">6 rasm</div>
+</div>
+<div class="arrow">▲</div>
+</div>
+
+<div class="grid" id="g1">
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/kampus/1.jpg"></div>
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/kampus/2.jpg"></div>
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/kampus/3.jpg"></div>
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/kampus/4.jpg"></div>
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/kampus/5.jpg"></div>
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/kampus/6.jpg"></div>
+</div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+<div class="section-head" onclick="toggleBox('g2',this)">
+<div class="left">
+<span>📚</span>
+<span id="studentsText">O'quvchilar</span>
+<div class="badge">6 rasm</div>
+</div>
+<div class="arrow">▼</div>
+</div>
+
+<div class="grid closed" id="g2">
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/students/1.jpg"></div>
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/students/2.jpg"></div>
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/students/3.jpg"></div>
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/students/4.jpg"></div>
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/students/5.jpg"></div>
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/students/6.jpg"></div>
+</div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+<div class="section-head" onclick="toggleBox('g3',this)">
+<div class="left">
+<span>⚽</span>
+<span id="footballText">Futbol klubi</span>
+<div class="badge">6 rasm</div>
+</div>
+<div class="arrow">▼</div>
+</div>
+
+<div class="grid closed" id="g3">
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/football/1.jpg"></div>
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/football/2.jpg"></div>
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/football/3.jpg"></div>
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/football/4.jpg"></div>
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/football/5.jpg"></div>
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/football/6.jpg"></div>
+</div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section">
+<div class="section-head" onclick="toggleBox('g4',this)">
+<div class="left">
+<span>🎉</span>
+<span id="eventsText">Tadbirlar</span>
+<div class="badge">6 rasm</div>
+</div>
+<div class="arrow">▼</div>
+</div>
+
+<div class="grid closed" id="g4">
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/tadbirlar/1.jpg"></div>
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/tadbirlar/2.jpg"></div>
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/tadbirlar/3.jpg"></div>
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/tadbirlar/4.jpg"></div>
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/tadbirlar/5.jpg"></div>
+<div class="photo" onclick="openImg(this)"><img src="./gallery-images/tadbirlar/6.jpg"></div>
+</div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+
+    <!-- LEFT -->
+    <div class="foot-left">
+      <div class="footer-top">
+        <img src="./images/logo.png" class="footer-logo">
+
+        <div class="icons">
+          <span onclick="window.open('https://t.me/PTMAUZ','_blank')">
+            <img src="./icons/telegram.svg">
+          </span>
+          <span><img src="./icons/facebook.svg"></span>
+          <span><img src="./icons/instagram.svg"></span>
+          <span><img src="./icons/youtube.svg"></span>
+        </div>
+      </div>
+
+      <p class="copy">© 2026 Uchkuprik IM</p>
+      <p class="mini">Barcha huquqlar himoyalangan</p>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="foot-right-wrap">
+
+      <div class="foot-mid">
+        <h3>Aloqa</h3>
+
+        <p><img src="./icons/telephone.svg"> +998 (91) 205 72 16</p>
+        <p><img src="./icons/telephone.svg"> +998 (--) --- -- --</p>
+        <p><img src="./icons/envelope.svg"> UchkuprikIM@gmail.com</p>
+        <p><img src="./icons/geo-alt.svg"> Farg'ona vil. Uchko'prik tum.<br>Sog'lom avlod, 14</p>
+        <p><img src="./icons/send.svg"> @PTMAUZ Telegram kanali</p>
+
+        <p>
+          🕒 Ish vaqtlari:<br>
+          Dush–Jum 8:00–17:00<br>
+          Shanba 8:00–12:00<br>
+          Yakshanba Dam olish
+        </p>
+      </div>
+
+      <div class="foot-right">
+        <h3>Navigatsiya</h3>
+
+        <a href="./school-website.html">Asosiy</a>
+        <a href="./gallery.html">Galereya</a>
+        <a href="#">SAT</a>
+        <a href="#">Yangiliklar</a>
+        <a href="#">Yutuqlarimiz</a>
+        <a href="#">Qabul</a>
+      </div>
+
+    </div>
+
+  </div>
+</footer>
+
+<div class="viewer" id="viewer" onclick="closeImg()">
+<img id="bigImg">
+</div>
+
+<script>
+function toggleLang(e){
+e.stopPropagation();
+langMenu.classList.toggle("show");
+mainMenu.classList.remove("show");
+menuBtn.classList.remove("active");
+}
+
+function toggleMenu(e){
+e.stopPropagation();
+mainMenu.classList.toggle("show");
+langMenu.classList.remove("show");
+menuBtn.classList.toggle("active");
+}
+
+window.onclick=function(){
+langMenu.classList.remove("show");
+mainMenu.classList.remove("show");
+menuBtn.classList.remove("active");
+}
+
+/* accordion */
+function toggleBox(id,el){
+const box=document.getElementById(id);
+const arrow=el.querySelector(".arrow");
+
+box.classList.toggle("closed");
+arrow.innerText=
+box.classList.contains("closed") ? "▼":"▲";
+}
+
+/* zoom */
+function openImg(el){
+bigImg.src=el.querySelector("img").src;
+viewer.classList.add("show");
+}
+
+function closeImg(){
+viewer.classList.remove("show");
+}
+
+/* lang */
+const langData={
+uz:{
+lang:"O'zbek",
+title:"Galereya",
+sub:"Maktab hayotining eng yorqin lahzalari",
+campus:"Kampus suratlari",
+students:"O'quvchilar",
+football:"Futbol klubi",
+events:"Tadbirlar",
+home:"Asosiy",
+news:"Yangiliklar",
+admission:"Qabul"
+},
+ru:{
+lang:"Русский",
+title:"Галерея",
+sub:"Самые яркие моменты школьной жизни",
+campus:"Фото кампуса",
+students:"Ученики",
+football:"Футбольный клуб",
+events:"Мероприятия",
+home:"Главная",
+news:"Новости",
+admission:"Приём"
+},
+en:{
+lang:"English",
+title:"Gallery",
+sub:"Brightest moments of school life",
+campus:"Campus Photos",
+students:"Students",
+football:"Football Club",
+events:"Events",
+home:"Home",
+news:"News",
+admission:"Admission"
+}
+};
+
+function setLang(type){
+let t=langData[type];
+
+currentLang.innerText=t.lang;
+pageTitle.innerText=t.title;
+pageSub.innerText=t.sub;
+campusText.innerText=t.campus;
+studentsText.innerText=t.students;
+footballText.innerText=t.football;
+eventsText.innerText=t.events;
+homeText.innerText=t.home;
+newsText.innerText=t.news;
+admissionText.innerText=t.admission;
+
+langMenu.classList.remove("show");
+}
+</script>
+
+</body>
+</html>
