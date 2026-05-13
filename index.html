@@ -88,11 +88,54 @@ box-shadow:0 8px 18px rgba(0,0,0,.08);
 
 @media(max-width:950px){
 .navbar{
-width:80%;
+width:95%;
 padding:12px 14px;
 border-radius:20px;
-margin:6px 0 16px 0;
 top:6px;
+}
+
+.download-btn{
+margin-top:4px;
+
+padding:14px 22px;
+
+font-size:15px;
+
+border-radius:16px;
+
+background:rgba(255,255,255,.75);
+
+backdrop-filter:blur(8px);
+
+border:1px solid rgba(255,255,255,.5);
+}
+
+.socials{
+display:flex;
+justify-content:center;
+align-items:center;
+
+flex-wrap:nowrap;
+
+gap:10px;
+
+margin-top:16px;
+margin-bottom:16px;
+}
+
+.socials button{
+width:52px;
+height:52px;
+
+padding:0;
+
+border-radius:16px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+margin:0 !important;
 }
 
 .socials button span{
@@ -105,43 +148,93 @@ border-radius:14px;
 }
 
 .hero{
-display:flex;
-flex-direction:column; 
-padding:12px;
-margin-top:90px;
-background:#fff;
+margin-left:0;
+margin-right:0;
+position:relative;
+overflow:hidden;
+
 display:flex !important;
-flex-direction:column !important;
+justify-content:center;
+align-items:center;
+
+min-height:520px;
+
+padding:30px 20px;
+
+margin-top:90px;
+
+border-radius:30px;
+
+background:#f5f5f5;
 }
+
 
 .stats{
-  gap:18px;
+display:flex;
+justify-content:center;
+align-items:center;
+
+flex-wrap:nowrap;
+
+gap:40px;
+
+margin:28px 0;
 }
 
-
 .stats div{
-  font-size:22px; 
+font-size:22px;
+font-weight:900;
+color:#111827;
 }
 
 .stats small{
-  font-size:12px; 
+font-size:12px;
+margin-top:4px;
+color:#555;
 }
 
+
 .hero img{
-  order:1;   
+position:absolute;
+inset:0;
+
+width:100%;
+height:100%;
+
+object-fit:cover;
+
+opacity:.18;
+
+z-index:1;
 }
 
 .hero-right{
-  order: 2;
-  text-align:center;
-  padding:10px 6px;
+position:relative;
+z-index:2;
+
+width:100%;
+
+display:flex;
+flex-direction:column;
+align-items:center;
+
+text-align:center;
+
+padding:10px;
 }
+
 .hero-right h1{
-  font-size:26px !important; 
-  line-height:1.25;
-  font-weight:900;
-  margin-bottom:16px;
-  word-break:break-word;
+font-size:28px !important;
+line-height:1.05;
+font-weight:900;
+
+margin-bottom:26px;
+
+color:#111827;
+}
+
+.container{
+padding:0 12px;
 }
 
 .hero-right h1 br{
@@ -163,8 +256,12 @@ display:none;
 }
 
 .lang-box::before{
-content:"🌐";
+content:"";
 font-size:18px;
+display: block;
+width: 18px;
+height: 18px;
+background:url("./icons/globe2.svg") center/contain no-repeat;
 }
 
 .lang-box::after{
@@ -174,33 +271,92 @@ margin-left:4px;
 color:#111;
 }
 
+.footer{
+padding:0 12px 20px;
+margin-top:18px;
+}
+
 .footer-inner{
-  padding:40px 20px !important;
-  gap:20px;
+  display: flex;
+  flex-direction: column;
+background:#d9dade;
+
+border:2px solid #ececec;
+
+border-radius:24px;
+
+padding:40px 20px !important;
+
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,.35),
+0 4px 12px rgba(0,0,0,.04);
+
+overflow:hidden;
+
+width:100%;
+}
+.footer-top{
+justify-content:center;
 }
 
 .foot-mid{
-  margin-bottom:20px; 
+align-items:center !important;
+text-align:center !important;
 }
 
-.foot-mid h3{
-  margin-bottom:10px;
+.foot-mid h3,
+.foot-right h3{
+width:100%;
+text-align:center;
 }
 
 .foot-mid p{
-  margin:6px 0; 
+  margin-left: 100px;
+display:flex;
+align-items:flex-start;
+
+gap:12px;
+
+text-align:left;
+
+width:100%;
+max-width:280px;
+
+
+word-break:break-word;
 }
 
 .foot-right{
-  margin-bottom:25px;
+align-items:center;
+text-align:center;
+}
+.foot-right-wrap{
+display:flex;
+flex-direction:column;
+
+width:100%;
+
+gap:30px;
 }
 
-.foot-right h3{
-  margin-bottom:10px;
+.foot-mid,
+.foot-right,
+.foot-left{
+width:100%;
+
+display:flex;
+flex-direction:column;
+align-items:center;
+
+text-align:center;
+gap: 19px;
 }
 
 .foot-right a{
-  margin:4px 0;
+text-decoration:none;
+color:#111;
+
+margin:4px 0;
 }
 
 
@@ -216,9 +372,29 @@ color:#111;
 
 
 .icons{
-  justify-content:center;
+justify-content:center;
 }
 
+
+.foot-mid{
+  order:1; 
+}
+.foot-right{
+  order:2; 
+}
+.foot-left{
+  order:3; 
+}
+
+.gallery{
+margin-left:0;
+margin-right:0;
+}
+
+.map{
+margin-left:0;
+margin-right:0;
+}
 }
 
 .menu-btn{
@@ -579,10 +755,14 @@ color:#111 !important;
 }
 
 .lang-box::before{
-content:"🌐";
-font-size:18px;
+content:"";
+width:18px;
+height:18px;
+display:block;
+background:url("./icons/globe2.svg") center/contain no-repeat;
 margin-right:6px;
 }
+
 
 .lang-box::after{
 content:"▼";
@@ -596,15 +776,9 @@ color:#111;
   padding:0 60px;
 }
 
-
 .logo-area{
 font-size:22px;
 max-width:none;
-}
-
-.logo-area img{
-width:46px;
-height:46px;
 }
 
 .hero{
@@ -612,6 +786,11 @@ grid-template-columns:1fr 1fr;
 padding:30px;
 border-radius:28px;
 gap:34px;
+}
+
+.logo-area img{
+width:46px;
+height:46px;
 }
 
 .hero img{
@@ -660,7 +839,6 @@ margin-top: 40px;
   font-size:16px;
   border-radius:16px;
   margin-top:10px;
-}
 }
 .footer{
   margin:40px auto;
@@ -718,15 +896,7 @@ margin-top: 40px;
   text-decoration:none;
   color:#111;
 }
-@media(max-width:950px){
 
-.foot-mid{ order:1; }
-.foot-right{ order:2; }
-.foot-left{ order:3; }
-
-}
-
-@media(min-width:951px){
 
 .footer-inner{
   display:grid;
@@ -777,6 +947,17 @@ margin-top: 40px;
   margin:6px 0;
 }
 
+.foot-mid p img{
+width:18px;
+height:18px;
+
+min-width:18px;
+
+object-fit:contain;
+
+margin-top:3px;
+}
+
 .foot-right{
   gap:8px;
 }
@@ -810,7 +991,6 @@ margin-top: 40px;
 .mini{
   margin-top:4px;
 }
-
 
 }
 
@@ -1031,7 +1211,7 @@ margin-top: 40px;
 
 <div class="foot-right-wrap">
   <div class="foot-mid">
-    <h3>Aloqa</h3>
+    <h3 id="contactText">Aloqa</h3>
 
     <p><img src="./icons/telephone.svg" alt=""> +998 (91) 205 72 16</p>
     <p><img src="./icons/telephone.svg" alt=""> +998 (--) --- -- --</p>
@@ -1039,16 +1219,16 @@ margin-top: 40px;
     <p><img src="./icons/geo-alt.svg" alt=""> Farg'ona vil. Uchko'prik tum.Sog'lom avlod, 14</p>
     <p><img src="./icons/send.svg" alt=""> @PTMAUZ Telegram kanali</p>
 
-    <p>🕒 Ish vaqtlari:<br>
+    <p><img src="./icons/clock.svg" alt="">Ish vaqtlari:<br>
     Dush–Jum 8:00–17:00<br>
     Shanba 8:00–12:00<br>
     Yakshanba Dam olish</p>
   </div>
 
   <div class="foot-right">
-    <h3>Navigatsiya</h3>
+    <h3 id="navText"> Navigatsiya</h3>
 
-    <a href="./school-website.html">Asosiy</a>
+    <a href="./index.html">Asosiy</a>
     <a href="./gallery.html">Galereya</a>
     <a href="#">SAT</a>
     <a href="#">Yangiliklar</a>
@@ -1085,7 +1265,7 @@ const words = {
 uz:{
 lang:"O'zbek",
 title:"Yaxshidan —<br>yetuklikka!",
-gallery:"Galereya",
+gallery:"Biz haqimizda",
 map:"Bizning manzil",
 contact:"Aloqa",
 nav:"Navigatsiya",
@@ -1096,7 +1276,7 @@ award:"Yutuq"
 ru:{
 lang:"Русский",
 title:"От хорошего —<br>к совершенству!",
-gallery:"Галерея",
+gallery:"О нас",
 map:"Наш адрес",
 contact:"Контакты",
 nav:"Навигация",
@@ -1107,7 +1287,7 @@ award:"Достижение"
 en:{
 lang:"English",
 title:"From good —<br>to excellence!",
-gallery:"Gallery",
+gallery:"About us",
 map:"Our location",
 contact:"Contact",
 nav:"Navigation",
