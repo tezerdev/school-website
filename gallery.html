@@ -1128,11 +1128,6 @@ currentLang.innerText=t.lang;
 pageTitle.innerText=t.gallery;
 pageSub.innerText=t.sub;
 
-campusText.innerText=t.campus;
-studentsText.innerText=t.students;
-footballText.innerText=t.football;
-eventsText.innerText=t.events;
-
 contactText.innerText=t.contact;
 
 document.querySelector("[data-lang='nav']").innerText=t.nav;
@@ -1156,55 +1151,56 @@ workTime.innerHTML=`
 ${t.work}
 `;
 
-langMenu.classList.remove("show");
+document.querySelectorAll(".section-head strong")[0].innerText=t.campus;
 
+document.querySelectorAll(".section-head strong")[1].innerText=t.students;
+
+document.querySelectorAll(".section-head strong")[2].innerText=t.football;
+
+document.querySelectorAll(".section-head strong")[3].innerText=t.events;
+
+langMenu.classList.remove("show");
 }
+
+const galleryCategories = [
+  { folder: 'kampus', title: 'Kampus suratlari', icon: '🏫' },
+  { folder: "o'quvchilar", title: "O'quvchilar", icon: '📚' },
+  { folder: 'football', title: 'Futbol klubi', icon: '⚽' },
+  { folder: 'tadbirlar', title: 'Tadbirlar', icon: '🎉' },
+];
 
 loadGallery();
 
 async function loadGallery(){
   const container = document.getElementById('gallerySections');
   container.innerHTML = '<p style="padding:24px 28px;color:#4b5563;">Rasmlar yuklanmoqda...</p>';
-  try {
-    const response = await fetch('/api/images');
-    if (!response.ok) throw new Error('Network error');
-    const data = await response.json();
-    const categories = Object.entries(data).sort(([a], [b]) => a.localeCompare(b, undefined, {numeric:true}));
-    if (!categories.length) {
-      container.innerHTML = '<p style="padding:24px 28px;color:#4b5563;">Gallery papkasida rasm topilmadi.</p>';
-      return;
-    }
 
-    container.innerHTML = categories.map(([folder, images]) => {
-      const safeId = `section-${folder.replace(/[^a-z0-9_-]/gi, '-')}`;
-      const titleMap = {
-        kampus: 'Kampus suratlari',
-        "o'quvchilar": "O'quvchilar",
-        football: 'Futbol klubi',
-        tadbirlar: 'Tadbirlar'
-      };
-      const iconMap = {
-        kampus: '🏫',
-        "o'quvchilar": '📚',
-        football: '⚽',
-        tadbirlar: '🎉'
-      };
-      const title = titleMap[folder] || folder.replace(/[-_]/g, ' ');
-      const icon = iconMap[folder] || '🖼️';
-      const count = images.length;
-      const cards = images.map(img => `
-        <div class="photo" onclick="openImg('${img.url}')">
-          <img src="${img.url}" alt="${title}">
-        </div>
-      `).join('');
-      return `
+  const sections = await Promise.all(galleryCategories.map(async category => {
+    const images = await loadImagesFromFolder(category.folder);
+    return { ...category, images };
+  }));
+
+  const hasImages = sections.some(section => section.images.length > 0);
+  if (!hasImages) {
+    container.innerHTML = '<p style="padding:24px 28px;color:#4b5563;">Rasmlar topilmadi. Iltimos sahifani GitHub Pages ga joylaganingizga va rasm papkasi mavjudligiga ishonch hosil qiling.</p>';
+    return;
+  }
+
+  container.innerHTML = sections.map(section => {
+    const safeId = `section-${section.folder.replace(/[^a-z0-9_-]/gi, '-')}`;
+    const cards = section.images.map(url => `
+      <div class="photo" onclick="openImg('${url}')">
+        <img src="${url}" alt="${section.title}">
+      </div>
+    `).join('');
+    return `
       <section class="gallery-section">
         <div class="section-head" data-toggle="${safeId}">
           <div class="left">
-            <span class="icon">${icon}</span>
+            <span class="icon">${section.icon}</span>
             <div class="meta">
-              <strong>${title}</strong>
-              <small>${count} rasm</small>
+              <strong>${section.title}</strong>
+              <small>${section.images.length} rasm</small>
             </div>
           </div>
           <span class="arrow"></span>
@@ -1213,13 +1209,43 @@ async function loadGallery(){
           ${cards}
         </div>
       </section>
-      `;
-    }).join('');
-    attachSectionToggles();
-  } catch (err) {
-    container.innerHTML = '<p style="padding:24px 28px;color:#b91c1c;">Galleryni yuklashda xato yuz berdi. Iltimos serverni ishga tushuring.</p>';
-    console.error(err);
-  }
+    `;
+  }).join('');
+
+  attachSectionToggles();
+}
+
+function loadImagesFromFolder(folder){
+  return new Promise(resolve => {
+    const urls = [];
+    let index = 1;
+    let misses = 0;
+    const maxIndex = 30;
+    const maxMisses = 3;
+
+    function tryNext(){
+      if (index > maxIndex || misses >= maxMisses) {
+        resolve(urls);
+        return;
+      }
+      const url = `./gallery-images/${encodeURIComponent(folder)}/${index}.jpg`;
+      const img = new Image();
+      img.onload = () => {
+        urls.push(url);
+        misses = 0;
+        index += 1;
+        tryNext();
+      };
+      img.onerror = () => {
+        misses += 1;
+        index += 1;
+        tryNext();
+      };
+      img.src = url;
+    }
+
+    tryNext();
+  });
 }
 
 function attachSectionToggles(){
