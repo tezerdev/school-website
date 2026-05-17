@@ -23,7 +23,6 @@ body{
   padding:0;
 }
 
-/* NAVBAR */
 .navbar{
   position:fixed;
   top:0px;
@@ -292,6 +291,13 @@ font-weight:700
 
 @media(max-width:950px){
 
+  .navbar{
+width:95%;
+padding:12px 14px;
+border-radius:20px;
+top:6px;
+}
+
 .logo{
 font-size:15px;
 gap:8px;
@@ -302,20 +308,134 @@ width:30px;
 height:30px;
 }
 
+.footer{
+padding:0 12px 20px;
+margin-top:18px;
 }
 
-@media(min-width:951px){
+.footer-inner{
+  display: flex;
+  flex-direction: column;
+background:#d9dade;
 
-.lang-box{
-width:auto;
-padding:0 16px;
-gap:8px;
+border:2px solid #ececec;
+
+border-radius:24px;
+
+padding:40px 20px !important;
+
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,.35),
+0 4px 12px rgba(0,0,0,.04);
+
+overflow:hidden;
+
+width:100%;
+}
+.footer-top{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:22px;
+flex-wrap:nowrap;
 }
 
-.lang-box span{
-display:block;
+.foot-mid{
+align-items:center !important;
+text-align:center !important;
+}
+
+.foot-mid h3,
+.foot-right h3{
+width:100%;
+text-align:center;
+}
+
+.foot-mid p{
+  margin-left: 100px;
+display:flex;
+align-items:flex-start;
+
+gap:12px;
+
+text-align:left;
+
+width:100%;
+max-width:280px;
+
+
+word-break:break-word;
+}
+
+.foot-right{
+align-items:center;
+text-align:center;
+}
+.foot-right-wrap{
+display:flex;
+flex-direction:column;
+
+width:100%;
+
+gap:30px;
+}
+
+.foot-mid,
+.foot-right,
+.foot-left{
+width:100%;
+
+display:flex;
+flex-direction:column;
+align-items:center;
+
+text-align:center;
+gap: 19px;
+}
+
+.foot-right a{
+text-decoration:none !important;
+color:#111827 !important;
 font-size:16px;
-font-weight:700;
+font-weight:500;
+display:block;
+margin:10px 0;
+}
+
+.foot-right a:hover{
+opacity:.7;
+}
+
+.foot-right{
+align-items:center;
+text-align:center;
+}
+
+
+.foot-left{
+  margin-top:20px; 
+}
+
+.footer-top{
+  justify-content:center;
+  gap:12px;
+  margin-bottom:10px;
+}
+
+
+.icons{
+justify-content:center;
+}
+
+
+.foot-mid{
+  order:1; 
+}
+.foot-right{
+  order:2; 
+}
+.foot-left{
+  order:3; 
 }
 
 }
@@ -334,51 +454,11 @@ gap:12px
 .photo img{
 height:240px
 }
-
-
-
-.footer{
-  width:100%;          
-  max-width:1700px;
-  margin:40px auto;
+.icons{
+display:flex;
+justify-content:center;
+gap:12px;
 }
-
-.footer-inner{
-  max-width:100% !important;
-  background:#cfd0d5;
-  border-radius:24px;
-  padding:50px 70px !important;
-  border:2px solid rgba(255,255,255,0.5);
-
-  display:flex;
-  flex-direction:column;
-  gap:30px;
-
-  align-items:center;
-  text-align:center;
-}
-
-
-.foot-left{
-    margin-top: 50px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:12px;
-}
-
-.footer-top{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  justify-content:center;
-}
-
-.footer-logo{
-  width:80px;
-  opacity:.6;
-}
-
 .icons{
   display:flex;
   gap:10px;
@@ -401,75 +481,62 @@ height:240px
 .copy{font-weight:600;}
 .mini{font-size:12px;opacity:.7;}
 
-.foot-mid{
+.foot-left{
+  margin-top: 50px;
   display:flex;
   flex-direction:column;
-  gap:8px;
   align-items:center;
+  gap:12px;
+  text-align:center;
 }
 
-.foot-mid p{
+
+.footer-top{
   display:flex;
   align-items:center;
-  gap:8px;
+  gap:14px;
   justify-content:center;
 }
 
-.foot-mid img{
-  width:18px;
+
+.footer-logo{
+  width:80px;
+  opacity:.6;
 }
 
 
-.foot-right{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-  align-items:center;
+.icons{
+display:flex;
+align-items:center;
+gap:18px;
+flex-wrap:nowrap;
 }
 
-.foot-right a{
-  text-decoration:none;
-  color:#111;
+.icons span{
+width:42px;
+height:42px;
+
+min-width:42px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+flex-shrink:0;
 }
 
-@media(max-width:950px){
-  .foot-mid{order:1;}
-  .foot-right{order:2;}
-  .foot-left{order:3;}
+.icons img{
+width:28px;
+height:28px;
+object-fit:contain;
 }
 
-
-@media(min-width:951px){
-
-.foot-left{
-  flex:0 0 30%;
-  align-items:flex-start;
-  text-align:left;
+.copy{
+  font-weight:600;
 }
 
-.footer-top{
-  justify-content:flex-start;
-}
-
-
-.foot-right-wrap{
-  flex:0 0 70%;
-  display:flex;
-  justify-content:flex-end;
-  gap:80px;
-}
-
-
-.foot-mid,
-.foot-right{
-  align-items:flex-start;
-  text-align:left;
-}
-
-.foot-mid p{
-  justify-content:flex-start;
-}
-
+.mini{
+  font-size:12px;
+  opacity:.7;
 }
 
 @media(min-width:951px){
@@ -479,6 +546,7 @@ height:240px
   flex-direction:row !important;
   justify-content:space-between !important;
   align-items:flex-start !important;
+  padding:50px 70px !important;
 }
 
 
@@ -497,6 +565,7 @@ height:240px
   gap:80px !important;
 }
 
+
 .foot-mid,
 .foot-right{
   display:flex !important;
@@ -505,19 +574,79 @@ height:240px
   text-align:left !important;
 }
 
+.foot-mid p{
+  justify-content:flex-start !important;
+}
+
+.footer{
+  margin:40px auto;
+  padding:20px;
+  max-width:1685px;
+}
+
+.footer-inner{
+  background:#cfd0d5;
+  border-radius:24px;
+  padding:50px 70px !important;
+  border:2px solid rgba(255,255,255,0.5);
+
+  display:flex;
+  flex-direction:column;
+  gap:30px;
+
+  align-items:center;
+  text-align:center;
+}
+
+.socials{
+  display:flex;
+  gap:1px;
+}
+
+.copy{
+  font-weight:600;
+}
+
+.mini{
+  font-size:12px;
+  opacity:.7;
+}
+.foot-mid{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  align-items:center;
+}
 
 .foot-mid p{
-  display:flex !important;
-  justify-content:flex-start !important;
+  display:flex;
+  justify-content:center;
+  gap:6px;
+}
+.foot-right{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
   align-items:center;
-  gap:8px;
+}
+
+.footer-right a{
+  text-decoration:none;
+  color:#111;
 }
 
 
 .footer-inner{
-  padding:50px 60px !important;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  align-items:start;
+  text-align:left;
 }
 
+
+.footer-inner{
+  padding:50px 70px !important;
+}
 
 .foot-mid{
   gap:10px;
@@ -531,6 +660,16 @@ height:240px
   margin:6px 0;
 }
 
+.foot-mid p img{
+width:18px;
+height:18px;
+
+min-width:18px;
+
+object-fit:contain;
+
+margin-top:3px;
+}
 
 .foot-right{
   gap:8px;
@@ -541,7 +680,21 @@ height:240px
 }
 
 .foot-right a{
-  margin:4px 0;
+text-decoration:none !important;
+color:#111827 !important;
+font-size:16px;
+font-weight:500;
+display:block;
+margin:10px 0;
+}
+
+.foot-right a:hover{
+opacity:.7;
+}
+
+.foot-right{
+align-items:center;
+text-align:center;
 }
 
 
@@ -554,12 +707,6 @@ height:240px
   margin-bottom:10px;
 }
 
-
-.icons{
-  gap:12px;
-}
-
-
 .copy{
   margin-top:6px;
 }
@@ -568,58 +715,158 @@ height:240px
   margin-top:4px;
 }
 
+  .navbar{
+width:calc(100% - 120px);
+margin: 0 auto;
+max-width:1630px;
+padding:14px 30px;
+border-radius:0 0 24px 24px;
+}
 
+.lang-box{
+width:auto;
+padding:0 16px;
+gap:8px;
+}
+
+.lang-box span{
+display:block;
+font-size:16px;
+font-weight:700;
+}
+
+}
+
+.photo img{
+width:100%;
+height:100%;
+object-fit:cover;
+border-radius:14px;
+display:block;
+}
+
+/* Override gallery section styles for dynamic load */
+.content{
+  margin-top:120px;
+  padding-bottom:40px;
+}
+.card{
+  border-radius:28px;
+  box-shadow:0 18px 40px rgba(0,0,0,.08);
+}
+.badge{
+  background:#eef2ff;
+  color:#3730a3;
+  font-weight:700;
+}
+.gallery-sections{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+.gallery-section{
+  background:#ffffff;
+  border-radius:28px;
+  overflow:hidden;
+  box-shadow:0 20px 50px rgba(0,0,0,.08);
+}
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:24px 28px;
+  gap:20px;
+  cursor:pointer;
+  transition:background .2s ease;
+}
+.section-head:hover{
+  background:#f8fafc;
+}
+.section-head.opened{
+  background:#f2f6ff;
+}
+.section-head .left{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+.section-head .icon{
+  width:50px;
+  height:50px;
+  border-radius:18px;
+  background:#eef2ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+}
+.section-head .meta{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.section-head .meta strong{
+  font-size:18px;
+}
+.section-head .meta small{
+  color:#6b7280;
+}
+.section-head .badge{
+  background:#e0e7ff;
+  color:#4338ca;
+  padding:10px 16px;
+}
+.arrow{
+  width:14px;
+  height:14px;
+  display:inline-flex;
+  border-right:2px solid #111827;
+  border-bottom:2px solid #111827;
+  transform:rotate(45deg);
+  transition:transform .3s ease;
+}
+.section-head.opened .arrow{
+  transform:rotate(-135deg);
+}
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+  padding:0 24px 24px;
+  max-height:10000px;
+  opacity:1;
+  overflow:hidden;
+  transition:max-height .35s ease, opacity .35s ease, padding .35s ease;
+}
+.gallery-grid.closed{
+  max-height:0;
+  opacity:0;
+  padding-bottom:0;
+}
+.photo{
+  border-radius:24px;
+  min-height:240px;
+  overflow:hidden;
+  cursor:pointer;
+}
+.photo::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.25) 100%);
+  opacity:0;
+  transition:opacity .25s ease;
+}
+.photo:hover::after{
+  opacity:1;
+}
+.viewer img{
+  border-radius:24px;
 }
 @media(max-width:950px){
-
-
-.footer-inner{
-  padding:40px 20px !important;
-  gap:20px;
-}
-
-
-.foot-mid{
-  margin-bottom:20px; 
-}
-
-.foot-mid h3{
-  margin-bottom:10px;
-}
-
-.foot-mid p{
-  margin:6px 0; 
-}
-
-
-.foot-right{
-  margin-bottom:25px;
-}
-
-.foot-right h3{
-  margin-bottom:10px;
-}
-
-.foot-right a{
-  margin:4px 0;
-}
-
-
-.foot-left{
-  margin-top:20px; 
-}
-
-.footer-top{
-  justify-content:center;
-  gap:12px;
-  margin-bottom:10px;
-}
-
-/* iconlar ajralmasin */
-.icons{
-  justify-content:center;
-}
-
+  .gallery-grid{ grid-template-columns:1fr; padding:0 18px 18px; }
+  .section-head{ padding:18px 20px; }
+  .card{ padding:22px; }
 }
 </style>
 </head>
@@ -674,153 +921,65 @@ height:240px
 <p class="sub" id="pageSub">Maktab hayotining eng yorqin lahzalari</p>
 </div>
 
-<!-- SECTION 1 -->
-<div class="section">
-<div class="section-head" onclick="toggleBox('g1',this)">
-<div class="left">
-<span>🏫</span>
-<span id="campusText">Kampus suratlari</span>
-<div class="badge">6 rasm</div>
-</div>
-<div class="arrow">▲</div>
-</div>
-
-<div class="grid" id="g1">
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/kampus/1.jpg"></div>
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/kampus/2.jpg"></div>
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/kampus/3.jpg"></div>
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/kampus/4.jpg"></div>
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/kampus/5.jpg"></div>
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/kampus/6.jpg"></div>
-</div>
-</div>
-
-<!-- SECTION 2 -->
-<div class="section">
-<div class="section-head" onclick="toggleBox('g2',this)">
-<div class="left">
-<span>📚</span>
-<span id="studentsText">O'quvchilar</span>
-<div class="badge">6 rasm</div>
-</div>
-<div class="arrow">▼</div>
-</div>
-
-<div class="grid closed" id="g2">
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/students/1.jpg"></div>
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/students/2.jpg"></div>
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/students/3.jpg"></div>
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/students/4.jpg"></div>
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/students/5.jpg"></div>
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/students/6.jpg"></div>
-</div>
-</div>
-
-<!-- SECTION 3 -->
-<div class="section">
-<div class="section-head" onclick="toggleBox('g3',this)">
-<div class="left">
-<span>⚽</span>
-<span id="footballText">Futbol klubi</span>
-<div class="badge">6 rasm</div>
-</div>
-<div class="arrow">▼</div>
-</div>
-
-<div class="grid closed" id="g3">
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/football/1.jpg"></div>
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/football/2.jpg"></div>
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/football/3.jpg"></div>
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/football/4.jpg"></div>
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/football/5.jpg"></div>
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/football/6.jpg"></div>
-</div>
-</div>
-
-<!-- SECTION 4 -->
-<div class="section">
-<div class="section-head" onclick="toggleBox('g4',this)">
-<div class="left">
-<span>🎉</span>
-<span id="eventsText">Tadbirlar</span>
-<div class="badge">6 rasm</div>
-</div>
-<div class="arrow">▼</div>
-</div>
-
-<div class="grid closed" id="g4">
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/tadbirlar/1.jpg"></div>
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/tadbirlar/2.jpg"></div>
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/tadbirlar/3.jpg"></div>
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/tadbirlar/4.jpg"></div>
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/tadbirlar/5.jpg"></div>
-<div class="photo" onclick="openImg(this)"><img src="./gallery-images/tadbirlar/6.jpg"></div>
-</div>
-</div>
+<div id="gallerySections" class="gallery-sections"></div>
 
 <footer class="footer">
-  <div class="footer-inner">
 
-    <!-- LEFT -->
-    <div class="foot-left">
-      <div class="footer-top">
-        <img src="./images/logo.png" class="footer-logo">
+<div class="footer-inner">
 
-        <div class="icons">
-          <span onclick="window.open('https://t.me/PTMAUZ','_blank')">
-            <img src="./icons/telegram.svg">
-          </span>
-          <span><img src="./icons/facebook.svg"></span>
-          <span><img src="./icons/instagram.svg"></span>
-          <span><img src="./icons/youtube.svg"></span>
-        </div>
-      </div>
+  <!-- LEFT -->
+<div class="foot-left">
 
-      <p class="copy">© 2026 Uchkuprik IM</p>
-      <p class="mini">Barcha huquqlar himoyalangan</p>
+  <div class="footer-top">
+    <img src="./images/logo.png" class="footer-logo">
+
+    <div class="icons">
+      <span><img style=" height: 30px; object-fit: cover;" src="./icons/telegram.svg" onclick="window.open('https://t.me/PTMAUZ','_blank')" ></span>
+      <span><img style=" height: 30px; object-fit: cover;" src="./icons/facebook.svg"></span>
+      <span><img style=" height: 30px; object-fit: cover;" src="./icons/instagram.svg"></span>
+      <span><img style=" height: 30px; object-fit: cover;" src="./icons/youtube.svg"></span>
     </div>
-
-    <!-- RIGHT -->
-    <div class="foot-right-wrap">
-
-      <div class="foot-mid">
-        <h3>Aloqa</h3>
-
-        <p><img src="./icons/telephone.svg"> +998 (91) 205 72 16</p>
-        <p><img src="./icons/telephone.svg"> +998 (--) --- -- --</p>
-        <p><img src="./icons/envelope.svg"> UchkuprikIM@gmail.com</p>
-        <p><img src="./icons/geo-alt.svg"> Farg'ona vil. Uchko'prik tum.<br>Sog'lom avlod, 14</p>
-        <p><img src="./icons/send.svg"> @PTMAUZ Telegram kanali</p>
-
-        <p>
-          🕒 Ish vaqtlari:<br>
-          Dush–Jum 8:00–17:00<br>
-          Shanba 8:00–12:00<br>
-          Yakshanba Dam olish
-        </p>
-      </div>
-
-      <div class="foot-right">
-        <h3 id="navText"> Navigatsiya</h3>
-
-<a href="./index.html" id="menu1">Asosiy</a>
-<a href="./gallery.html" id="menu2">Galereya</a>
-<a href="#" id="satText">SAT</a>
-<a href="#" id="menu4">Yangiliklar</a>
-<a href="#" id="menu5">Yutuqlarimiz</a>
-<a href="#" id="menu6">Qabul</a>
-
-<a href="index.html" id="side1">Asosiy</a>
-<a href="gallery.html" id="side2">Galereya</a>
-<a id="side3">SAT</a>
-<a id="side4">Yangiliklar</a>
-<a id="side5">Yutuqlarimiz</a>
-<a id="side6">Qabul</a>
-      </div>
-
-    </div>
-
   </div>
+
+  <p class="copy">© 2026 Uchkuprik IM</p>
+  <p class="mini" id="rightsText">
+Barcha huquqlar himoyalangan
+</p>
+
+</div>
+
+<div class="foot-right-wrap">
+  <div class="foot-mid">
+    <h3 id="contactText">Aloqa</h3>
+
+    <p><img src="./icons/telephone.svg" alt=""> +998 (91) 205 72 16</p>
+    <p><img src="./icons/telephone.svg" alt=""> +998 (--) --- -- --</p>
+    <p><img src="./icons/envelope.svg" alt=""> UchkuprikIM@gmail.com</p>
+    <p><img src="./icons/geo-alt.svg" alt=""> Farg'ona vil. Uchko'prik tum.Sog'lom avlod, 14</p>
+    <p><img src="./icons/send.svg" alt=""> @PTMAUZ Telegram kanali</p>
+
+    <p id="workTime">
+<img src="./icons/clock.svg" alt="">
+Ish vaqtlari:<br>
+Dush–Jum 8:00–17:00<br>
+Shanba 8:00–12:00<br>
+Yakshanba Dam olish
+</p>
+  </div>
+
+  <div class="foot-right">
+
+<h3 data-lang="nav">Navigatsiya</h3>
+
+<a href="./index.html" data-lang="home">Asosiy</a>
+<a href="./gallery.html" data-lang="galleryMenu">Galereya</a>
+<a href="#" data-lang="sat">SAT</a>
+<a href="#" data-lang="news">Yangiliklar</a>
+<a href="#" data-lang="achievements">Yutuqlarimiz</a>
+<a href="#" data-lang="admission">Qabul</a>
+  </div>
+</div>
+</div>
 </footer>
 
 <div class="viewer" id="viewer" onclick="closeImg()">
@@ -868,81 +1027,222 @@ function closeImg(){
 viewer.classList.remove("show");
 }
 
-/* lang */
-const words = {
+const words={
+
 uz:{
 lang:"O'zbek",
-title:"Yaxshidan —<br>yetuklikka!",
-gallery:"Biz haqimizda",
-map:"Bizning manzil",
+
+gallery:"Galereya",
+sub:"Maktab hayotining eng yorqin lahzalari",
+
+campus:"Kampus suratlari",
+students:"O'quvchilar",
+football:"Futbol klubi",
+events:"Tadbirlar",
+
 contact:"Aloqa",
 nav:"Navigatsiya",
 
-student:"O'quvchi",
-teacher:"Ustoz",
-award:"Yutuq",
-
 home:"Asosiy",
 galleryMenu:"Galereya",
+sat:"SAT",
 news:"Yangiliklar",
 achievements:"Yutuqlarimiz",
-admission:"Qabul"
+admission:"Qabul",
+
+rights:"Barcha huquqlar himoyalangan",
+
+work:`Ish vaqtlari:<br>
+Dush–Jum 8:00–17:00<br>
+Shanba 8:00–12:00<br>
+Yakshanba Dam olish`
 },
 
 ru:{
 lang:"Русский",
-title:"От хорошего —<br>к совершенству!",
-gallery:"О нас",
-map:"Наш адрес",
+
+gallery:"Галерея",
+sub:"Самые яркие моменты школьной жизни",
+
+campus:"Фото кампуса",
+students:"Ученики",
+football:"Футбольный клуб",
+events:"Мероприятия",
+
 contact:"Контакты",
 nav:"Навигация",
 
-student:"Ученик",
-teacher:"Учитель",
-award:"Достижение",
-
 home:"Главная",
 galleryMenu:"Галерея",
+sat:"SAT",
 news:"Новости",
 achievements:"Достижения",
-admission:"Приём"
+admission:"Приём",
+
+rights:"Все права защищены",
+
+work:`Время работы:<br>
+Пн–Пт 8:00–17:00<br>
+Суббота 8:00–12:00<br>
+Воскресенье выходной`
 },
 
 en:{
 lang:"English",
-title:"From good —<br>to excellence!",
-gallery:"About us",
-map:"Our location",
+
+gallery:"Gallery",
+sub:"The brightest moments of school life",
+
+campus:"Campus photos",
+students:"Students",
+football:"Football club",
+events:"Events",
+
 contact:"Contact",
 nav:"Navigation",
 
-student:"Students",
-teacher:"Teachers",
-award:"Awards",
-
 home:"Home",
 galleryMenu:"Gallery",
+sat:"SAT",
 news:"News",
 achievements:"Achievements",
-admission:"Admission"
+admission:"Admission",
+
+rights:"All rights reserved",
+
+work:`Working hours:<br>
+Mon–Fri 8:00–17:00<br>
+Saturday 8:00–12:00<br>
+Sunday closed`
 }
-};
+
+}
+
 
 function setLang(type){
-let t=langData[type];
+
+let t=words[type];
 
 currentLang.innerText=t.lang;
-pageTitle.innerText=t.title;
+
+pageTitle.innerText=t.gallery;
 pageSub.innerText=t.sub;
+
 campusText.innerText=t.campus;
 studentsText.innerText=t.students;
 footballText.innerText=t.football;
 eventsText.innerText=t.events;
-homeText.innerText=t.home;
-newsText.innerText=t.news;
-admissionText.innerText=t.admission;
+
+contactText.innerText=t.contact;
+
+document.querySelector("[data-lang='nav']").innerText=t.nav;
+
+document.querySelector("[data-lang='home']").innerText=t.home;
+
+document.querySelector("[data-lang='galleryMenu']").innerText=t.galleryMenu;
+
+document.querySelector("[data-lang='sat']").innerText=t.sat;
+
+document.querySelector("[data-lang='news']").innerText=t.news;
+
+document.querySelector("[data-lang='achievements']").innerText=t.achievements;
+
+document.querySelector("[data-lang='admission']").innerText=t.admission;
+
+rightsText.innerText=t.rights;
+
+workTime.innerHTML=`
+<img src="./icons/clock.svg">
+${t.work}
+`;
 
 langMenu.classList.remove("show");
+
+}
+
+loadGallery();
+
+async function loadGallery(){
+  const container = document.getElementById('gallerySections');
+  container.innerHTML = '<p style="padding:24px 28px;color:#4b5563;">Rasmlar yuklanmoqda...</p>';
+  try {
+    const response = await fetch('/api/images');
+    if (!response.ok) throw new Error('Network error');
+    const data = await response.json();
+    const categories = Object.entries(data).sort(([a], [b]) => a.localeCompare(b, undefined, {numeric:true}));
+    if (!categories.length) {
+      container.innerHTML = '<p style="padding:24px 28px;color:#4b5563;">Gallery papkasida rasm topilmadi.</p>';
+      return;
+    }
+
+    container.innerHTML = categories.map(([folder, images]) => {
+      const safeId = `section-${folder.replace(/[^a-z0-9_-]/gi, '-')}`;
+      const titleMap = {
+        kampus: 'Kampus suratlari',
+        "o'quvchilar": "O'quvchilar",
+        football: 'Futbol klubi',
+        tadbirlar: 'Tadbirlar'
+      };
+      const iconMap = {
+        kampus: '🏫',
+        "o'quvchilar": '📚',
+        football: '⚽',
+        tadbirlar: '🎉'
+      };
+      const title = titleMap[folder] || folder.replace(/[-_]/g, ' ');
+      const icon = iconMap[folder] || '🖼️';
+      const count = images.length;
+      const cards = images.map(img => `
+        <div class="photo" onclick="openImg('${img.url}')">
+          <img src="${img.url}" alt="${title}">
+        </div>
+      `).join('');
+      return `
+      <section class="gallery-section">
+        <div class="section-head" data-toggle="${safeId}">
+          <div class="left">
+            <span class="icon">${icon}</span>
+            <div class="meta">
+              <strong>${title}</strong>
+              <small>${count} rasm</small>
+            </div>
+          </div>
+          <span class="arrow"></span>
+        </div>
+        <div id="${safeId}" class="gallery-grid closed">
+          ${cards}
+        </div>
+      </section>
+      `;
+    }).join('');
+    attachSectionToggles();
+  } catch (err) {
+    container.innerHTML = '<p style="padding:24px 28px;color:#b91c1c;">Galleryni yuklashda xato yuz berdi. Iltimos serverni ishga tushuring.</p>';
+    console.error(err);
+  }
+}
+
+function attachSectionToggles(){
+  document.querySelectorAll('.section-head').forEach(head => {
+    head.onclick = () => {
+      const targetId = head.dataset.toggle;
+      const grid = document.getElementById(targetId);
+      if (!grid) return;
+      const isClosed = grid.classList.toggle('closed');
+      head.classList.toggle('opened', !isClosed);
+    };
+  });
+}
+
+function openImg(src){
+  const viewer = document.getElementById('viewer');
+  const bigImg = document.getElementById('bigImg');
+  bigImg.src = src;
+  viewer.classList.add('show');
+}
+
+function closeImg(){
+  document.getElementById('viewer').classList.remove('show');
 }
 </script>
 

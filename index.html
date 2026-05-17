@@ -353,10 +353,21 @@ gap: 19px;
 }
 
 .foot-right a{
-text-decoration:none;
-color:#111;
+text-decoration:none !important;
+color:#111827 !important;
+font-size:16px;
+font-weight:500;
+display:block;
+margin:10px 0;
+}
 
-margin:4px 0;
+.foot-right a:hover{
+opacity:.7;
+}
+
+.foot-right{
+align-items:center;
+text-align:center;
 }
 
 
@@ -849,7 +860,7 @@ margin-top: 40px;
 .footer-inner{
   background:#cfd0d5;
   border-radius:24px;
-  padding:30px 25px;
+  padding:50px 70px !important;
   border:2px solid rgba(255,255,255,0.5);
 
   display:flex;
@@ -892,7 +903,7 @@ margin-top: 40px;
   align-items:center;
 }
 
-.foot-right a{
+.footer-right a{
   text-decoration:none;
   color:#111;
 }
@@ -905,34 +916,9 @@ margin-top: 40px;
   text-align:left;
 }
 
-.foot-left{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-  gap:10px;
-}
-
-.foot-left .socials{
-  justify-content:flex-start;
-}
-
-
-.foot-mid{
-  align-items:flex-start;
-}
-
-.foot-mid p{
-  justify-content:flex-start;
-}
-
-
-.foot-right{
-  align-items:flex-start;
-}
-
 
 .footer-inner{
-  padding:50px 60px !important;
+  padding:50px 70px !important;
 }
 
 .foot-mid{
@@ -967,7 +953,21 @@ margin-top:3px;
 }
 
 .foot-right a{
-  margin:4px 0;
+text-decoration:none !important;
+color:#111827 !important;
+font-size:16px;
+font-weight:500;
+display:block;
+margin:10px 0;
+}
+
+.foot-right a:hover{
+opacity:.7;
+}
+
+.foot-right{
+align-items:center;
+text-align:center;
 }
 
 
@@ -1043,31 +1043,40 @@ margin-top:3px;
 @media(min-width:951px){
 
 .footer-inner{
-  display:grid;
-  grid-template-columns:1fr 2fr;
-  align-items:start;
+  display:flex !important;
+  flex-direction:row !important;
+  justify-content:space-between !important;
+  align-items:flex-start !important;
+  padding:50px 70px !important;
 }
 
 
 .foot-left{
-  padding-left: 100px;
-  align-items:flex-start;
+  width:30% !important;
+  align-items:flex-start !important;
+  text-align:left !important;
 }
 
 
 .foot-right-wrap{
-  padding-right: 150px;
-  display:flex;
-  justify-content:flex-end; 
-  gap:80px;                 
-  width:100%;
+  width:70% !important;
+  display:flex !important;
+  flex-direction:row !important;
+  justify-content:flex-end !important;
+  gap:80px !important;
 }
 
 
 .foot-mid,
 .foot-right{
-  text-align:left;
-  align-items:flex-start;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:flex-start !important;
+  text-align:left !important;
+}
+
+.foot-mid p{
+  justify-content:flex-start !important;
 }
 
 }
@@ -1155,7 +1164,7 @@ margin-top:3px;
 </div>
 </section>
 
-<h3 class="section-title" id="galleryText">Galereya</h3>
+<h3 class="section-title" id="galleryText">Biz haqimizda</h3>
 
 <section class="gallery">
 
@@ -1205,7 +1214,9 @@ margin-top:3px;
   </div>
 
   <p class="copy">© 2026 Uchkuprik IM</p>
-  <p class="mini">Barcha huquqlar himoyalangan</p>
+  <p class="mini" id="rightsText">
+Barcha huquqlar himoyalangan
+</p>
 
 </div>
 
@@ -1219,21 +1230,25 @@ margin-top:3px;
     <p><img src="./icons/geo-alt.svg" alt=""> Farg'ona vil. Uchko'prik tum.Sog'lom avlod, 14</p>
     <p><img src="./icons/send.svg" alt=""> @PTMAUZ Telegram kanali</p>
 
-    <p><img src="./icons/clock.svg" alt="">Ish vaqtlari:<br>
-    Dush–Jum 8:00–17:00<br>
-    Shanba 8:00–12:00<br>
-    Yakshanba Dam olish</p>
+    <p id="workTime">
+<img src="./icons/clock.svg" alt="">
+Ish vaqtlari:<br>
+Dush–Jum 8:00–17:00<br>
+Shanba 8:00–12:00<br>
+Yakshanba Dam olish
+</p>
   </div>
 
   <div class="foot-right">
-    <h3 id="navText"> Navigatsiya</h3>
 
-    <a href="./index.html">Asosiy</a>
-    <a href="./gallery.html">Galereya</a>
-    <a href="#">SAT</a>
-    <a href="#">Yangiliklar</a>
-    <a href="#">Yutuqlarimiz</a>
-    <a href="#">Qabul</a>
+<h3 data-lang="nav">Navigatsiya</h3>
+
+<a href="./index.html" data-lang="home">Asosiy</a>
+<a href="./gallery.html" data-lang="galleryMenu">Galereya</a>
+<a href="#" data-lang="sat">SAT</a>
+<a href="#" data-lang="news">Yangiliklar</a>
+<a href="#" data-lang="achievements">Yutuqlarimiz</a>
+<a href="#" data-lang="admission">Qabul</a>
   </div>
 </div>
 </div>
@@ -1271,7 +1286,18 @@ contact:"Aloqa",
 nav:"Navigatsiya",
 student:"O'quvchi",
 teacher:"Ustoz",
-award:"Yutuq"
+award:"Yutuq",
+home:"Asosiy",
+galleryMenu:"Galereya",
+sat:"SAT",
+news:"Yangiliklar",
+achievements:"Yutuqlarimiz",
+admission:"Qabul",
+work:`Ish vaqtlari:<br>
+Dush–Jum 8:00–17:00<br>
+Shanba 8:00–12:00<br>
+Yakshanba Dam olish`,
+rights:"Barcha huquqlar himoyalangan"
 },
 ru:{
 lang:"Русский",
@@ -1282,7 +1308,18 @@ contact:"Контакты",
 nav:"Навигация",
 student:"Ученик",
 teacher:"Учитель",
-award:"Достижение"
+award:"Достижение",
+home:"Главная",
+galleryMenu:"Галерея",
+sat:"SAT",
+news:"Новости",
+achievements:"Достижения",
+admission:"Приём",
+work:`Время работы:<br>
+Пн–Пт 8:00–17:00<br>
+Суббота 8:00–12:00<br>
+Воскресенье выходной`,
+rights:"Все права защищены"
 },
 en:{
 lang:"English",
@@ -1293,7 +1330,18 @@ contact:"Contact",
 nav:"Navigation",
 student:"Students",
 teacher:"Teachers",
-award:"Awards"
+award:"Awards",
+home:"Home",
+galleryMenu:"Gallery",
+sat:"SAT",
+news:"News",
+achievements:"Achievements",
+admission:"Admission",
+work:`Working hours:<br>
+Mon–Fri 8:00–17:00<br>
+Saturday 8:00–12:00<br>
+Sunday Closed`,
+  rights:"All rights reserved"
 }
 };
 
@@ -1306,10 +1354,22 @@ award:"Awards"
     galleryText.innerText = t.gallery;
     mapText.innerText = t.map;
     contactText.innerText = t.contact;
-    navText.innerText = t.nav;
     s1.innerText = t.student;
     s2.innerText = t.teacher;
     s3.innerText = t.award;
+    workTime.innerHTML=
+`<img src="./icons/clock.svg"> ${t.work}`;
+rightsText.innerText=t.rights;
+
+    document.querySelectorAll("[data-lang]").forEach(el=>{
+
+const key = el.dataset.lang;
+
+if(t[key]){
+el.innerText=t[key];
+}
+
+});
 
     dropdown.classList.remove("show");
     }
