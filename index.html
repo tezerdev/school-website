@@ -707,8 +707,7 @@ body::before {
 .contact-icon img {
   width: 16px; height: 16px;
   object-fit: contain;
-  opacity:1;
-  filter: brightness(0) invert(1);
+  opacity:5;
 }
 
 .contact-text { color: var(--ink); font-size: 14px; }
@@ -836,7 +835,12 @@ body::before {
   background: rgba(201,168,76,.1);
 }
 
-.footer-social-btn img { width: 16px; height: 16px; opacity: .6; filter: brightness(5); }
+.footer-social-btn img { 
+  width: 16px;
+  height: 16px;
+  opacity: 1;
+  filter: invert(100%);
+}
 .footer-social-btn:hover img { opacity: 1; }
 
 .footer-col-title {
