@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uchko'prik IM — Yaxshidan Yetuklikka</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Fraunces:ital,wght@0,300;0,700;1,300;1,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sky:#e8f4fd;
+  --sky2:#d0eafb;
+  --sun:#f9c846;
+  --sun2:#f5a623;
+  --grass:#2ecc8a;
+  --grass2:#1aab72;
+  --rose:#ff6b6b;
+  --rose2:#e84545;
+  --violet:#7c6fcd;
+  --violet2:#5a4fb3;
+  --peach:#fff0e8;
+  --warm:#fdf8f2;
+  --ink:#1a1a2e;
+  --ink2:#2d2d44;
+  --muted:#7a7a96;
+  --muted2:#adadc8;
+  --white:#ffffff;
+  --card:#ffffff;
+  --border:rgba(26,26,46,.07);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+body{
+  background:var(--warm);
+  color:var(--ink);
+  font-family:'Nunito',sans-serif;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* ── CURSOR ── */
+#cursor-dot{
+  position:fixed;width:8px;height:8px;border-radius:50%;
+  background:var(--rose);pointer-events:none;z-index:99999;
+  transform:translate(-50%,-50%);
+  transition:width .3s,height .3s,opacity .3s;
+}
+#cursor-ring{
+  position:fixed;width:36px;height:36px;border-radius:50%;
+  border:2px solid rgba(255,107,107,.4);pointer-events:none;z-index:99998;
+  transform:translate(-50%,-50%);
+  transition:width .4s cubic-bezier(.4,0,.2,1),height .4s cubic-bezier(.4,0,.2,1),border-color .3s;
+}
+#cursor-ring.big{width:60px;height:60px;border-color:rgba(255,107,107,.25)}
+body:not(.cursor-active) #cursor-dot,
+body:not(.cursor-active) #cursor-ring{opacity:0}
+
+/* ── NAV ── */
+.nav{
+  position:fixed;top:16px;left:50%;transform:translateX(-50%);
+  z-index:900;
+  width:calc(100% - 48px);max-width:1320px;
+  height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(24px) saturate(1.8);
+  -webkit-backdrop-filter:blur(24px);
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,.9);
+  box-shadow:0 8px 32px rgba(26,26,46,.08),0 1px 0 rgba(255,255,255,.9) inset;
+}
+
+.nav-logo{
+  display:flex;align-items:center;gap:10px;text-decoration:none;
+}
+.nav-logo img{width:36px;height:36px;object-fit:contain}
+.nav-logo-text{
+  font-family:'Fraunces',serif;font-size:18px;font-weight:700;
+  color:var(--ink);letter-spacing:-.3px;
+}
+
+.nav-links{
+  display:flex;gap:4px;list-style:none;
+}
+.nav-links a{
+  padding:8px 14px;border-radius:10px;
+  font-size:13px;font-weight:600;color:var(--muted);
+  text-decoration:none;transition:all .2s;
+  letter-spacing:.2px;
+}
+.nav-links a:hover{background:var(--peach);color:var(--ink)}
+
+.nav-right{display:flex;align-items:center;gap:8px;position:relative}
+
+.lang-pill{
+  padding:8px 14px;border-radius:10px;
+  font-size:13px;font-weight:600;color:var(--muted);
+  background:none;border:none;cursor:none;transition:all .2s;
+  position:relative;
+}
+.lang-pill:hover{background:var(--peach);color:var(--ink)}
+.lang-dropdown{
+  position:absolute;top:calc(100%+8px);right:0;
+  background:var(--white);border-radius:16px;
+  border:1px solid var(--border);
+  box-shadow:0 20px 60px rgba(26,26,46,.14);
+  overflow:hidden;width:140px;
+  opacity:0;visibility:hidden;transform:translateY(-8px) scale(.96);
+  transition:all .22s cubic-bezier(.4,0,.2,1);
+}
+.lang-dropdown.open{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+.lang-dropdown a{
+  display:block;padding:12px 16px;
+  font-size:13px;font-weight:600;color:var(--muted);
+  text-decoration:none;transition:all .15s;
+}
+.lang-dropdown a:hover{background:var(--peach);color:var(--ink);padding-left:20px}
+
+.ham{
+  display:none;width:40px;height:40px;border-radius:12px;
+  background:none;border:none;cursor:none;
+  flex-direction:column;align-items:center;justify-content:center;gap:5px;
+}
+.ham span{display:block;width:20px;height:2px;background:var(--ink);border-radius:2px;transition:all .3s}
+
+.mob-screen{
+  position:fixed;inset:0;z-index:890;
+  background:var(--warm);
+  display:flex;flex-direction:column;justify-content:center;align-items:center;gap:8px;
+  opacity:0;visibility:hidden;transition:all .3s;
+  padding:40px;
+}
+.mob-screen.open{opacity:1;visibility:visible}
+.mob-screen a{
+  font-family:'Fraunces',serif;font-size:clamp(36px,8vw,56px);
+  font-weight:700;color:var(--ink);text-decoration:none;
+  opacity:.25;transition:all .2s;line-height:1.2;
+  border-bottom:1px solid var(--border);width:100%;text-align:center;padding:10px 0;
+}
+.mob-screen a:hover{opacity:1;color:var(--rose)}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;
+  padding-top:100px;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:0;position:relative;overflow:hidden;
+}
+
+/* organic blob backgrounds */
+.hero::before{
+  content:'';position:absolute;
+  top:-200px;left:-200px;
+  width:700px;height:700px;
+  background:radial-gradient(ellipse at center, rgba(249,200,70,.2) 0%, transparent 65%);
+  border-radius:60% 40% 70% 30% / 50% 60% 40% 50%;
+  animation:blobA 12s ease-in-out infinite;
+  pointer-events:none;z-index:0;
+}
+.hero::after{
+  content:'';position:absolute;
+  bottom:-100px;right:-100px;
+  width:500px;height:500px;
+  background:radial-gradient(ellipse at center, rgba(46,204,138,.15) 0%, transparent 65%);
+  border-radius:40% 60% 30% 70% / 60% 40% 70% 30%;
+  animation:blobB 10s ease-in-out infinite;
+  pointer-events:none;z-index:0;
+}
+@keyframes blobA{
+  0%,100%{border-radius:60% 40% 70% 30% / 50% 60% 40% 50%;transform:translate(0,0) rotate(0deg)}
+  33%{border-radius:40% 60% 30% 70% / 70% 30% 60% 40%;transform:translate(30px,-20px) rotate(5deg)}
+  66%{border-radius:70% 30% 50% 50% / 40% 70% 30% 60%;transform:translate(-20px,30px) rotate(-3deg)}
+}
+@keyframes blobB{
+  0%,100%{border-radius:40% 60% 30% 70% / 60% 40% 70% 30%;transform:translate(0,0)}
+  50%{border-radius:60% 40% 70% 30% / 30% 70% 40% 60%;transform:translate(-20px,-30px)}
+}
+
+.hero-left{
+  padding:60px 48px 60px 60px;
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;z-index:1;
+}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--sun);color:var(--ink);
+  padding:7px 16px;border-radius:50px;
+  font-size:12px;font-weight:800;letter-spacing:.5px;
+  margin-bottom:32px;
+  width:fit-content;
+  box-shadow:0 4px 14px rgba(249,200,70,.4);
+  animation:badgePop .6s .1s cubic-bezier(.34,1.56,.64,1) both;
+}
+.hero-badge-dot{width:7px;height:7px;border-radius:50%;background:var(--sun2);flex-shrink:0}
+@keyframes badgePop{from{opacity:0;transform:scale(.7) translateY(10px)}to{opacity:1;transform:none}}
+
+.hero-title{
+  font-family:'Fraunces',serif;
+  font-size:clamp(48px,6vw,86px);
+  line-height:1.0;letter-spacing:-2px;
+  color:var(--ink);
+  margin-bottom:24px;
+}
+.hero-title .line{display:block;overflow:hidden}
+.hero-title .word-wrap{
+  display:inline-block;
+  transform:translateY(110%);opacity:0;
+  transition:transform .8s cubic-bezier(.16,1,.3,1),opacity .5s ease;
+}
+.hero-title .word-wrap.show{transform:translateY(0);opacity:1}
+.hero-title .italic-word{font-style:italic;color:var(--violet)}
+.hero-title .green-word{color:var(--grass)}
+
+.hero-sub{
+  font-size:17px;line-height:1.75;color:var(--muted);
+  max-width:420px;margin-bottom:40px;font-weight:400;
+  opacity:0;transform:translateY(20px);
+  transition:all .7s .7s ease;
+}
+.hero-sub.show{opacity:1;transform:none}
+
+.hero-cta{
+  display:flex;gap:12px;flex-wrap:wrap;
+  opacity:0;transform:translateY(16px);
+  transition:all .6s .9s ease;
+}
+.hero-cta.show{opacity:1;transform:none}
+
+.btn-main{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:15px 28px;
+  background:var(--ink);color:var(--white);
+  font-size:14px;font-weight:700;
+  border-radius:14px;border:none;cursor:none;text-decoration:none;
+  transition:transform .2s,box-shadow .2s,background .2s;
+  box-shadow:0 8px 24px rgba(26,26,46,.2);
+}
+.btn-main:hover{transform:translateY(-3px);box-shadow:0 16px 36px rgba(26,26,46,.25);background:var(--ink2)}
+.btn-main svg{width:16px;height:16px}
+
+.btn-soft{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:15px 28px;
+  background:var(--white);color:var(--ink);
+  font-size:14px;font-weight:700;
+  border-radius:14px;border:1.5px solid var(--border);cursor:none;text-decoration:none;
+  transition:all .2s;
+  box-shadow:0 4px 16px rgba(26,26,46,.06);
+}
+.btn-soft:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(26,26,46,.1);border-color:var(--muted2)}
+
+/* STATS CARDS */
+.stats-row{
+  display:flex;gap:12px;margin-top:48px;
+  opacity:0;transition:opacity .6s 1.1s ease;
+}
+.stats-row.show{opacity:1}
+.stat-card{
+  flex:1;padding:18px 20px;border-radius:16px;
+  background:var(--white);border:1px solid var(--border);
+  box-shadow:0 4px 20px rgba(26,26,46,.05);
+  transition:transform .2s;
+}
+.stat-card:hover{transform:translateY(-4px)}
+.stat-card:nth-child(1){border-top:3px solid var(--sun)}
+.stat-card:nth-child(2){border-top:3px solid var(--grass)}
+.stat-card:nth-child(3){border-top:3px solid var(--violet)}
+.stat-num{
+  font-family:'Fraunces',serif;font-size:36px;font-weight:700;
+  color:var(--ink);line-height:1;
+}
+.stat-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:6px}
+
+/* HERO RIGHT */
+.hero-right{
+  position:relative;display:flex;align-items:center;justify-content:center;
+  padding:60px 48px;z-index:1;
+}
+
+.hero-img-frame{
+  position:relative;width:100%;max-width:460px;
+}
+.hero-img-blob{
+  width:100%;aspect-ratio:1;
+  border-radius:62% 38% 46% 54% / 60% 44% 56% 40%;
+  overflow:hidden;
+  animation:frameBlob 8s ease-in-out infinite;
+  box-shadow:0 32px 80px rgba(26,26,46,.18);
+}
+@keyframes frameBlob{
+  0%,100%{border-radius:62% 38% 46% 54% / 60% 44% 56% 40%}
+  25%{border-radius:42% 58% 64% 36% / 48% 60% 40% 52%}
+  50%{border-radius:54% 46% 38% 62% / 52% 36% 64% 48%}
+  75%{border-radius:36% 64% 54% 46% / 64% 48% 52% 36%}
+}
+.hero-img-blob img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform 8s ease;
+}
+.hero-img-blob img.expanded{transform:scale(1.04)}
+
+/* FLOATING CARDS */
+.float-card{
+  position:absolute;
+  background:var(--white);border-radius:16px;
+  padding:14px 18px;
+  box-shadow:0 12px 40px rgba(26,26,46,.12);
+  display:flex;align-items:center;gap:10px;
+  font-size:13px;font-weight:700;color:var(--ink);
+  border:1px solid rgba(255,255,255,.9);
+  animation:floatUp 3s ease-in-out infinite;
+  white-space:nowrap;
+}
+.float-card:nth-child(2){animation-delay:-1s;animation-name:floatDown}
+.float-card:nth-child(3){animation-delay:-2s}
+@keyframes floatUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes floatDown{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+.float-card-1{top:10%;right:-20px}
+.float-card-2{bottom:18%;left:-24px}
+.float-card-3{top:50%;right:-28px;transform:translateY(-50%)}
+.float-icon{font-size:22px}
+
+/* ── COLORED DIVIDER ── */
+.color-strip{
+  display:flex;height:6px;
+}
+.cs1{flex:3;background:var(--sun)}
+.cs2{flex:2;background:var(--rose)}
+.cs3{flex:2;background:var(--grass)}
+.cs4{flex:1;background:var(--violet)}
+
+/* ── TICKER ── */
+.ticker-wrap{
+  overflow:hidden;padding:18px 0;
+  background:var(--ink);
+}
+.ticker-inner{
+  display:inline-flex;white-space:nowrap;gap:0;
+  animation:tickerRoll 28s linear infinite;
+}
+.ticker-inner:hover{animation-play-state:paused}
+@keyframes tickerRoll{to{transform:translateX(-50%)}}
+.t-item{
+  display:inline-flex;align-items:center;gap:16px;
+  padding:0 24px;
+  font-size:13px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,.5);
+}
+.t-item .t-star{color:var(--sun);font-size:14px}
+.t-item.highlight{color:var(--sun)}
+
+/* ── SECTION BASE ── */
+.section{
+  padding:96px 60px;
+  max-width:1380px;margin:0 auto;
+}
+.section-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 14px;border-radius:8px;
+  font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  margin-bottom:16px;
+}
+.tag-yellow{background:rgba(249,200,70,.15);color:var(--sun2)}
+.tag-green{background:rgba(46,204,138,.12);color:var(--grass2)}
+.tag-violet{background:rgba(124,111,205,.12);color:var(--violet2)}
+.tag-rose{background:rgba(255,107,107,.12);color:var(--rose2)}
+.section-title{
+  font-family:'Fraunces',serif;
+  font-size:clamp(32px,4vw,54px);
+  font-weight:700;letter-spacing:-1.5px;line-height:1.05;
+  color:var(--ink);
+}
+
+/* ── ABOUT GRID ── */
+.about-grid{
+  display:grid;grid-template-columns:1.1fr 1fr;
+  gap:24px;align-items:start;
+}
+.about-main-card{
+  background:var(--ink);
+  border-radius:28px;padding:52px 48px;
+  color:var(--white);
+  position:relative;overflow:hidden;
+}
+.about-main-card::before{
+  content:'';position:absolute;
+  top:-80px;right:-80px;
+  width:300px;height:300px;
+  background:radial-gradient(circle,rgba(249,200,70,.15) 0%,transparent 65%);
+  border-radius:50%;pointer-events:none;
+}
+.about-card-label{
+  font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;
+  color:rgba(255,255,255,.35);margin-bottom:20px;
+}
+.about-card-title{
+  font-family:'Fraunces',serif;
+  font-size:clamp(28px,3vw,40px);
+  font-weight:700;line-height:1.1;letter-spacing:-1px;
+  color:var(--white);margin-bottom:20px;
+  font-style:italic;
+}
+.about-card-body{
+  font-size:15px;line-height:1.8;
+  color:rgba(255,255,255,.55);font-weight:400;
+}
+.about-side{display:flex;flex-direction:column;gap:24px}
+
+.info-card{
+  background:var(--white);border-radius:24px;
+  padding:28px;border:1px solid var(--border);
+  box-shadow:0 4px 24px rgba(26,26,46,.05);
+  transition:transform .2s,box-shadow .2s;
+}
+.info-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(26,26,46,.1)}
+.info-card-icon{
+  font-size:28px;margin-bottom:12px;display:block;
+}
+.info-card-title{
+  font-family:'Fraunces',serif;font-size:20px;font-weight:700;
+  color:var(--ink);margin-bottom:8px;letter-spacing:-.3px;
+}
+.info-card-text{font-size:14px;line-height:1.7;color:var(--muted)}
+.info-card.yellow-top{border-top:3px solid var(--sun)}
+.info-card.green-top{border-top:3px solid var(--grass)}
+.info-card.violet-top{border-top:3px solid var(--violet)}
+
+/* ── GALLERY SLIDER ── */
+.slider-section{
+  background:var(--sky);
+  padding:80px 0;
+  overflow:hidden;
+}
+.slider-header{
+  padding:0 60px;
+  display:flex;align-items:flex-end;justify-content:space-between;
+  margin-bottom:36px;
+  max-width:1380px;margin-left:auto;margin-right:auto;
+}
+.slider-ctrl{display:flex;align-items:center;gap:10px}
+.sl-btn{
+  width:48px;height:48px;border-radius:14px;
+  border:1.5px solid var(--border);background:var(--white);
+  color:var(--ink);font-size:22px;cursor:none;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+  box-shadow:0 4px 16px rgba(26,26,46,.06);
+}
+.sl-btn:hover{background:var(--ink);color:var(--white);border-color:var(--ink);transform:scale(1.05)}
+.sl-count{
+  font-family:'Fraunces',serif;font-size:22px;
+  color:var(--muted2);letter-spacing:-1px;
+  padding:0 10px;
+}
+.sl-count b{color:var(--ink)}
+
+.slider-viewport{
+  overflow:hidden;padding:0 60px;
+}
+.slider-track{
+  display:flex;gap:20px;
+  transition:transform .8s cubic-bezier(.77,0,.18,1);
+}
+.slide-card{
+  flex-shrink:0;
+  width:calc(33.333% - 14px);
+  border-radius:24px;overflow:hidden;
+  aspect-ratio:4/3;position:relative;
+  box-shadow:0 12px 40px rgba(26,26,46,.1);
+}
+.slide-card img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .5s ease;
+}
+.slide-card:hover img{transform:scale(1.06)}
+.slide-card-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 40%,rgba(26,26,46,.7));
+  opacity:0;transition:opacity .3s;
+}
+.slide-card:hover .slide-card-overlay{opacity:1}
+
+.slider-dots{
+  display:flex;justify-content:center;gap:8px;
+  padding:28px 60px 0;
+}
+.sdot{
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(26,26,46,.15);cursor:none;
+  transition:all .3s;
+}
+.sdot.active{width:28px;border-radius:4px;background:var(--ink)}
+
+/* ── SOCIAL SECTION ── */
+.social-section{
+  padding:80px 60px;
+  max-width:1380px;margin:0 auto;
+}
+.social-cards{
+  display:flex;gap:12px;flex-wrap:wrap;
+  margin-top:32px;
+}
+.soc-card{
+  display:inline-flex;align-items:center;gap:12px;
+  padding:16px 28px;border-radius:16px;
+  font-size:15px;font-weight:700;
+  text-decoration:none;
+  border:none;cursor:none;
+  transition:transform .2s,box-shadow .2s;
+  box-shadow:0 6px 24px rgba(26,26,46,.1);
+}
+.soc-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(26,26,46,.18)}
+.soc-card svg{width:20px;height:20px;flex-shrink:0}
+.soc-tg{background:#e8f6fe;color:#0f8cc6}
+.soc-fb{background:#eaf0fe;color:#1761c4}
+.soc-ig{background:#fdeef5;color:#c52c7a}
+.soc-yt{background:#feeeee;color:#cc1818}
+
+/* ── CONTACT ── */
+.contact-section{
+  background:var(--peach);
+  padding:0;overflow:hidden;
+}
+.contact-inner{
+  max-width:1380px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;
+}
+.contact-info{
+  padding:80px 60px;
+  display:flex;flex-direction:column;gap:36px;
+}
+.contact-big-title{
+  font-family:'Fraunces',serif;
+  font-size:clamp(36px,5vw,64px);
+  font-weight:700;letter-spacing:-2px;line-height:.95;
+  color:var(--ink);
+}
+.contact-big-title span{color:var(--rose);font-style:italic}
+.c-items{display:flex;flex-direction:column;gap:0}
+.c-row{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:16px 0;border-bottom:1px solid rgba(26,26,46,.07);
+}
+.c-row:first-child{border-top:1px solid rgba(26,26,46,.07)}
+.c-ico{
+  width:40px;height:40px;border-radius:12px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--white);
+  box-shadow:0 4px 12px rgba(26,26,46,.06);
+}
+.c-ico img{width:16px;height:16px;opacity:.5}
+.c-text-val{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5}
+.c-text-key{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:2px}
+
+.hours-box{
+  background:var(--white);border-radius:20px;
+  padding:24px;
+  box-shadow:0 8px 32px rgba(26,26,46,.06);
+}
+.hours-box-title{
+  font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:8px;
+}
+.hours-box-title::before{content:'🕐'}
+.hours-rows{display:flex;flex-direction:column;gap:10px}
+.h-row{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:14px;
+}
+.h-row .h-day{font-weight:600;color:var(--ink)}
+.h-row .h-time{
+  font-family:'Fraunces',serif;font-weight:700;color:var(--ink);
+  font-size:16px;letter-spacing:-.3px;
+}
+.h-row .h-time.closed{color:var(--rose)}
+
+.contact-map{position:relative;overflow:hidden;min-height:500px}
+.contact-map iframe{
+  width:100%;height:100%;min-height:500px;
+  border:none;display:block;
+}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--ink);
+  padding:80px 60px 40px;
+}
+.foot-main{
+  max-width:1260px;margin:0 auto;
+  display:grid;grid-template-columns:1.5fr 1fr 1fr;
+  gap:60px;
+  padding-bottom:56px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.foot-logo-wrap{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.foot-logo-wrap img{width:42px;height:42px;object-fit:contain;opacity:.8}
+.foot-logo-name{
+  font-family:'Fraunces',serif;font-size:22px;font-weight:700;
+  color:var(--white);letter-spacing:-.3px;
+}
+.foot-tagline{font-size:14px;line-height:1.7;color:rgba(255,255,255,.35);max-width:260px;margin-bottom:24px}
+.foot-soc-row{display:flex;gap:8px}
+.f-soc{
+  width:38px;height:38px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.1);background:none;
+  display:flex;align-items:center;justify-content:center;
+  cursor:none;transition:all .2s;
+}
+.f-soc:hover{border-color:var(--sun);background:rgba(249,200,70,.1)}
+.f-soc img{width:16px;height:16px;opacity:.4;filter:brightness(4)}
+.f-soc:hover img{opacity:1}
+
+.foot-col-head{
+  font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  color:var(--sun);margin-bottom:20px;
+}
+.foot-links-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.foot-links-list a{
+  font-size:13px;color:rgba(255,255,255,.4);text-decoration:none;
+  transition:all .15s;
+}
+.foot-links-list a:hover{color:var(--white);padding-left:6px}
+.foot-c-list{display:flex;flex-direction:column;gap:10px}
+.foot-c-row{display:flex;gap:10px;font-size:12px;color:rgba(255,255,255,.3);line-height:1.5}
+.foot-c-row img{width:13px;height:13px;opacity:.25;filter:brightness(4);flex-shrink:0;margin-top:2px}
+
+.foot-bottom{
+  max-width:1260px;margin:28px auto 0;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
+}
+.foot-copy{font-size:12px;color:rgba(255,255,255,.2);letter-spacing:.5px}
+
+/* COLOR BAND AT FOOT TOP */
+.foot-color-band{display:flex;height:4px;margin-bottom:56px}
+.fcb1{flex:2;background:var(--sun)}
+.fcb2{flex:1;background:var(--grass)}
+.fcb3{flex:1;background:var(--rose)}
+.fcb4{flex:1;background:var(--violet)}
+
+/* ── REVEAL ── */
+.rev{opacity:0;transform:translateY(36px);transition:opacity .8s ease,transform .8s cubic-bezier(.16,1,.3,1)}
+.rev.in{opacity:1;transform:none}
+.rev-l{opacity:0;transform:translateX(-28px);transition:opacity .7s ease,transform .7s cubic-bezier(.16,1,.3,1)}
+.rev-l.in{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* ── MOBILE ── */
+@media(max-width:960px){
+  .nav{width:calc(100% - 24px);top:10px;padding:0 16px}
+  .nav-links{display:none}
+  .ham{display:flex}
+
+  .hero{grid-template-columns:1fr;padding-top:90px}
+  .hero-left{padding:40px 24px 0}
+  .hero-right{padding:24px;min-height:auto}
+  .hero-img-blob{max-width:340px;margin:0 auto}
+  .float-card-1,.float-card-2,.float-card-3{display:none}
+  .stats-row{gap:8px}
+  .stat-card{padding:14px}
+  .stat-num{font-size:28px}
+
+  .section{padding:64px 24px}
+  .about-grid{grid-template-columns:1fr}
+  .about-main-card{padding:36px 28px}
+
+  .slider-header{padding:0 24px}
+  .slider-viewport{padding:0 24px}
+  .slider-track{gap:12px}
+  .slide-card{width:calc(100% - 80px)}
+  .slider-dots{padding:20px 24px 0}
+
+  .social-section{padding:60px 24px}
+
+  .contact-inner{grid-template-columns:1fr}
+  .contact-info{padding:60px 24px}
+  .contact-map{min-height:300px}
+  .contact-map iframe{min-height:300px}
+
+  footer{padding:60px 24px 36px}
+  .foot-main{grid-template-columns:1fr;gap:36px}
+  .foot-color-band{margin-bottom:40px}
+  .foot-bottom{flex-direction:column;text-align:center}
+
+  body{cursor:auto}
+  #cursor-dot,#cursor-ring{display:none}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <img src="./images/logo.png" alt="Logo">
+    <span class="nav-logo-text">Uchko'prik IM</span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="index.html" id="nl-home">Asosiy</a></li>
+    <li><a href="gallery.html" id="nl-gallery">Galereya</a></li>
+    <li><a href="#" id="nl-sat">SAT</a></li>
+    <li><a href="#" id="nl-news">Yangiliklar</a></li>
+    <li><a href="#" id="nl-ach">Yutuqlar</a></li>
+    <li><a href="#" id="nl-adm">Qabul</a></li>
+  </ul>
+
+  <div class="nav-right">
+    <button class="lang-pill" id="langPill">
+      <span id="curLang">O'ZB</span> ▾
+      <div class="lang-dropdown" id="langDrop">
+        <a href="#" onclick="setLang('uz');return false">O'zbek</a>
+        <a href="#" onclick="setLang('ru');return false">Русский</a>
+        <a href="#" onclick="setLang('en');return false">English</a>
+      </div>
+    </button>
+    <button class="ham" id="hamBtn"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="mob-screen" id="mobScreen">
+  <a href="index.html">Asosiy</a>
+  <a href="gallery.html">Galereya</a>
+  <a href="#">SAT</a>
+  <a href="#">Yangiliklar</a>
+  <a href="#">Yutuqlar</a>
+  <a href="#">Qabul</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      <span id="heroBadge">Farg'ona Viloyati · 2026</span>
+    </div>
+
+    <h1 class="hero-title">
+      <span class="line">
+        <span class="word-wrap" id="hw1" style="transition-delay:.1s">Yaxshidan</span>
+      </span>
+      <span class="line">
+        <span class="word-wrap italic-word" id="hw2" style="transition-delay:.2s">—&nbsp;yetuklikka!</span>
+      </span>
+    </h1>
+
+    <p class="hero-sub" id="heroSub">
+      Uchko'prik Innovatsion Maktabi — bilim, ijod va muvaffaqiyat maktabi. Har bir o'quvchi uchun yangi ufqlar va imkoniyatlar.
+    </p>
+
+    <div class="hero-cta">
+      <a href="https://t.me/PTMAUZ/6128" class="btn-main" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span id="ctaAdm">Qabul — 2026</span>
+      </a>
+      <button class="btn-soft" onclick="downloadFile()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        <span id="ctaDl">Portfolio</span>
+      </button>
+    </div>
+
+    <div class="stats-row" id="statsRow">
+      <div class="stat-card">
+        <div class="stat-num">300+</div>
+        <div class="stat-label" id="s1">O'quvchi</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">30+</div>
+        <div class="stat-label" id="s2">Ustoz</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">150+</div>
+        <div class="stat-label" id="s3">Yutuq</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-img-frame">
+      <div class="hero-img-blob">
+        <img src="./images/hero.jpg" alt="Maktab" id="heroImg">
+      </div>
+      <div class="float-card float-card-1">
+        <span class="float-icon">🏆</span>
+        <span id="fc1">150+ Yutuq</span>
+      </div>
+      <div class="float-card float-card-2">
+        <span class="float-icon">📚</span>
+        <span id="fc2">Zamonaviy ta'lim</span>
+      </div>
+      <div class="float-card float-card-3">
+        <span class="float-icon">⭐</span>
+        <span id="fc3">Top maktab</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COLOR STRIP -->
+<div class="color-strip"><div class="cs1"></div><div class="cs2"></div><div class="cs3"></div><div class="cs4"></div></div>
+
+<!-- TICKER -->
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker-inner" id="tickerEl"></div>
+</div>
+
+<!-- ABOUT -->
+<section class="section">
+  <div class="section-tag tag-yellow rev"><span id="aboutTag">Maktabimiz haqida</span></div>
+  <h2 class="section-title rev d1" id="aboutTitle">Bilim va imkoniyat<br>markazi</h2>
+  <div style="margin-top:40px" class="about-grid">
+    <div class="about-main-card rev">
+      <div class="about-card-label" id="aboutCardLabel">Bizning missiya</div>
+      <h3 class="about-card-title" id="aboutCardTitle">Har bir o'quvchi — katta kelajak.</h3>
+      <p class="about-card-body" id="aboutCardBody">Uchko'prik Innovatsion Maktabi o'z o'quvchilariga zamonaviy bilim va ko'nikmalar berishga bag'ishlangan. Biz bilim olish jarayonini qiziqarli, samarali va ilhomlantiruvchi qilishga harakat qilamiz.</p>
+    </div>
+    <div class="about-side">
+      <div class="info-card yellow-top rev d1">
+        <span class="info-card-icon">🎯</span>
+        <div class="info-card-title" id="ic1t">Maqsadli ta'lim</div>
+        <p class="info-card-text" id="ic1b">Har bir o'quvchining qiziqishlari va salohiyatini rivojlantirish uchun individual yondashuv.</p>
+      </div>
+      <div class="info-card green-top rev d2">
+        <span class="info-card-icon">🌱</span>
+        <div class="info-card-title" id="ic2t">Rivojlanish muhiti</div>
+        <p class="info-card-text" id="ic2b">Zamonaviy jihozlar va ilg'or o'qitish metodlari bilan qurilgan sog'lom ta'lim muhiti.</p>
+      </div>
+      <div class="info-card violet-top rev d3">
+        <span class="info-card-icon">🚀</span>
+        <div class="info-card-title" id="ic3t">Kelajakka tayyorlik</div>
+        <p class="info-card-text" id="ic3b">SAT va xalqaro imtihonlarga tayyorgarlik, olimpiadalar va ko'rgazmalar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDER -->
+<div class="slider-section">
+  <div class="slider-header rev">
+    <div>
+      <div class="section-tag tag-green" style="margin-bottom:10px"><span id="sliderTag">Fotogalereya</span></div>
+      <h2 class="section-title" id="sliderTitle">Maktab hayoti</h2>
+    </div>
+    <div class="slider-ctrl">
+      <div class="sl-count"><b id="sCur">1</b> / <span id="sTotal">9</span></div>
+      <button class="sl-btn" onclick="prevSlide()">‹</button>
+      <button class="sl-btn" onclick="nextSlide()">›</button>
+    </div>
+  </div>
+  <div class="slider-viewport">
+    <div class="slider-track" id="sTrack">
+      <div class="slide-card"><img src="./images/1.jpg" alt="" loading="lazy"></div>
+      <div class="slide-card"><img src="./images/2.jpg" alt="" loading="lazy"></div>
+      <div class="slide-card"><img src="./images/3.jpg" alt="" loading="lazy"></div>
+      <div class="slide-card"><img src="./images/4.jpg" alt="" loading="lazy"></div>
+      <div class="slide-card"><img src="./images/5.jpg" alt="" loading="lazy"></div>
+      <div class="slide-card"><img src="./images/6.jpg" alt="" loading="lazy"></div>
+      <div class="slide-card"><img src="./images/7.jpg" alt="" loading="lazy"></div>
+      <div class="slide-card"><img src="./images/8.jpg" alt="" loading="lazy"></div>
+      <div class="slide-card"><img src="./images/9.jpg" alt="" loading="lazy"></div>
+    </div>
+  </div>
+  <div class="slider-dots" id="sDots"></div>
+</div>
+
+<!-- SOCIALS -->
+<section class="social-section rev">
+  <div class="section-tag tag-rose"><span id="socialTag">Ijtimoiy tarmoqlar</span></div>
+  <h2 class="section-title d1" id="socialTitle">Bizni kuzating</h2>
+  <div class="social-cards">
+    <a href="https://t.me/PTMAUZ" target="_blank" class="soc-card soc-tg">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.932z"/></svg>
+      <span>Telegram</span>
+    </a>
+    <a href="#" class="soc-card soc-fb">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      <span>Facebook</span>
+    </a>
+    <a href="#" class="soc-card soc-ig">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+      <span>Instagram</span>
+    </a>
+    <a href="#" class="soc-card soc-yt">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+      <span>YouTube</span>
+    </a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact-section">
+  <div class="contact-inner">
+    <div class="contact-info rev">
+      <div>
+        <div class="section-tag tag-violet" style="margin-bottom:14px"><span id="contactTag">Aloqa</span></div>
+        <h2 class="contact-big-title"><span id="contactTitle1">Manzil</span><br><span id="contactTitle2">va aloqa</span></h2>
+      </div>
+      <div class="c-items">
+        <div class="c-row">
+          <div class="c-ico"><img src="./icons/telephone.svg" alt=""></div>
+          <div>
+            <div class="c-text-val">+998 (91) 205 72 16</div>
+            <div class="c-text-key" id="phoneKey">Telefon</div>
+          </div>
+        </div>
+        <div class="c-row">
+          <div class="c-ico"><img src="./icons/envelope.svg" alt=""></div>
+          <div>
+            <div class="c-text-val">UchkuprikIM@gmail.com</div>
+            <div class="c-text-key" id="emailKey">Elektron pochta</div>
+          </div>
+        </div>
+        <div class="c-row">
+          <div class="c-ico"><img src="./icons/geo-alt.svg" alt=""></div>
+          <div>
+            <div class="c-text-val">Farg'ona vil. Uchko'prik tum.<br>Sog'lom avlod, 14</div>
+            <div class="c-text-key" id="addrKey">Manzil</div>
+          </div>
+        </div>
+      </div>
+      <div class="hours-box">
+        <div class="hours-box-title" id="hoursTitle">Ish vaqtlari</div>
+        <div class="hours-rows">
+          <div class="h-row"><span class="h-day" id="wdDay">Dushanba – Juma</span><span class="h-time">8:00 – 17:00</span></div>
+          <div class="h-row"><span class="h-day" id="satDay">Shanba</span><span class="h-time">8:00 – 12:00</span></div>
+          <div class="h-row"><span class="h-day" id="sunDay">Yakshanba</span><span class="h-time closed" id="closedTxt">Dam olish</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-map rev d1">
+      <iframe src="https://yandex.uz/map-widget/v1/?ll=71.050143%2C40.548335&pt=71.050143,40.548335,pm2blm&z=17" title="Manzil" loading="lazy"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div style="max-width:1260px;margin:0 auto">
+    <div class="foot-color-band"><div class="fcb1"></div><div class="fcb2"></div><div class="fcb3"></div><div class="fcb4"></div></div>
+  </div>
+  <div class="foot-main">
+    <div>
+      <div class="foot-logo-wrap">
+        <img src="./images/logo.png" alt="">
+        <span class="foot-logo-name">Uchko'prik IM</span>
+      </div>
+      <p class="foot-tagline" id="footTagline">Yaxshidan yetuklikka — bilim, ijod va muvaffaqiyat yo'lida.</p>
+      <div class="foot-soc-row">
+        <button class="f-soc" onclick="window.open('https://t.me/PTMAUZ','_blank')"><img src="./icons/telegram.svg" alt=""></button>
+        <button class="f-soc"><img src="./icons/facebook.svg" alt=""></button>
+        <button class="f-soc"><img src="./icons/instagram.svg" alt=""></button>
+        <button class="f-soc"><img src="./icons/youtube.svg" alt=""></button>
+      </div>
+    </div>
+    <div>
+      <div class="foot-col-head" id="footNavHead">Navigatsiya</div>
+      <ul class="foot-links-list">
+        <li><a href="index.html" id="fl-home">Asosiy</a></li>
+        <li><a href="gallery.html" id="fl-gallery">Galereya</a></li>
+        <li><a href="#" id="fl-sat">SAT</a></li>
+        <li><a href="#" id="fl-news">Yangiliklar</a></li>
+        <li><a href="#" id="fl-ach">Yutuqlarimiz</a></li>
+        <li><a href="https://t.me/PTMAUZ/6128" id="fl-adm">Qabul</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-col-head" id="footContactHead">Aloqa</div>
+      <div class="foot-c-list">
+        <div class="foot-c-row"><img src="./icons/telephone.svg" alt="">+998 (91) 205 72 16</div>
+        <div class="foot-c-row"><img src="./icons/envelope.svg" alt="">UchkuprikIM@gmail.com</div>
+        <div class="foot-c-row"><img src="./icons/geo-alt.svg" alt="">Farg'ona vil. Uchko'prik tum. Sog'lom avlod, 14</div>
+        <div class="foot-c-row"><img src="./icons/send.svg" alt="">@PTMAUZ</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span class="foot-copy">© 2026 Uchkuprik IM</span>
+    <span class="foot-copy" id="rights">Barcha huquqlar himoyalangan</span>
+  </div>
+</footer>
+
+<script>
+/* ── CURSOR ── */
+const dot=document.getElementById('cursor-dot'),ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  dot.style.left=mx+'px';dot.style.top=my+'px';
+  document.body.classList.add('cursor-active');
+});
+(function loop(){
+  rx+=(mx-rx)*.12;ry+=(my-ry)*.12;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a,button,.stat-card,.info-card,.slide-card,.soc-card,.sdot,.sl-btn').forEach(el=>{
+  el.addEventListener('mouseenter',()=>ring.classList.add('big'));
+  el.addEventListener('mouseleave',()=>ring.classList.remove('big'));
+});
+
+/* ── LANG ── */
+const T={
+  uz:{
+    short:"O'ZB",
+    heroBadge:"Farg'ona Viloyati · 2026",
+    hw1:"Yaxshidan",hw2:"—\u00a0yetuklikka!",
+    heroSub:"Uchko'prik Innovatsion Maktabi — bilim, ijod va muvaffaqiyat maktabi. Har bir o'quvchi uchun yangi ufqlar va imkoniyatlar.",
+    ctaAdm:"Qabul — 2026",ctaDl:"Portfolio",
+    s1:"O'quvchi",s2:"Ustoz",s3:"Yutuq",
+    fc1:"150+ Yutuq",fc2:"Zamonaviy ta'lim",fc3:"Top maktab",
+    aboutTag:"Maktabimiz haqida",aboutTitle:"Bilim va imkoniyat\nmarkazi",
+    aboutCardLabel:"Bizning missiya",aboutCardTitle:"Har bir o'quvchi — katta kelajak.",
+    aboutCardBody:"Uchko'prik Innovatsion Maktabi o'z o'quvchilariga zamonaviy bilim va ko'nikmalar berishga bag'ishlangan. Biz bilim olish jarayonini qiziqarli, samarali va ilhomlantiruvchi qilishga harakat qilamiz.",
+    ic1t:"Maqsadli ta'lim",ic1b:"Har bir o'quvchining qiziqishlari va salohiyatini rivojlantirish uchun individual yondashuv.",
+    ic2t:"Rivojlanish muhiti",ic2b:"Zamonaviy jihozlar va ilg'or o'qitish metodlari bilan qurilgan sog'lom ta'lim muhiti.",
+    ic3t:"Kelajakka tayyorlik",ic3b:"SAT va xalqaro imtihonlarga tayyorgarlik, olimpiadalar va ko'rgazmalar.",
+    sliderTag:"Fotogalereya",sliderTitle:"Maktab hayoti",
+    socialTag:"Ijtimoiy tarmoqlar",socialTitle:"Bizni kuzating",
+    contactTag:"Aloqa",contactTitle1:"Manzil",contactTitle2:"va aloqa",
+    phoneKey:"Telefon",emailKey:"Elektron pochta",addrKey:"Manzil",
+    hoursTitle:"Ish vaqtlari",wdDay:"Dushanba – Juma",satDay:"Shanba",sunDay:"Yakshanba",closedTxt:"Dam olish",
+    footTagline:"Yaxshidan yetuklikka — bilim, ijod va muvaffaqiyat yo'lida.",
+    footNavHead:"Navigatsiya",footContactHead:"Aloqa",
+    "fl-home":"Asosiy","fl-gallery":"Galereya","fl-sat":"SAT","fl-news":"Yangiliklar","fl-ach":"Yutuqlarimiz","fl-adm":"Qabul",
+    "nl-home":"Asosiy","nl-gallery":"Galereya","nl-sat":"SAT","nl-news":"Yangiliklar","nl-ach":"Yutuqlar","nl-adm":"Qabul",
+    rights:"Barcha huquqlar himoyalangan",
+    ticker:["Bilim","🌟","Ijod","🏆","Muvaffaqiyat","🎯","Uchko'prik IM","✨","Yaxshidan yetuklikka","💫"]
+  },
+  ru:{
+    short:"РУС",
+    heroBadge:"Ферганская область · 2026",
+    hw1:"От хорошего",hw2:"—\u00a0к лучшему!",
+    heroSub:"Инновационная школа Учкуприк — знания, творчество, успех. Новые горизонты и возможности для каждого ученика.",
+    ctaAdm:"Приём — 2026",ctaDl:"Портфолио",
+    s1:"Ученик",s2:"Учитель",s3:"Достижение",
+    fc1:"150+ Достижений",fc2:"Современное обучение",fc3:"Топ школа",
+    aboutTag:"О нашей школе",aboutTitle:"Центр знаний\nи возможностей",
+    aboutCardLabel:"Наша миссия",aboutCardTitle:"Каждый ученик — великое будущее.",
+    aboutCardBody:"Инновационная школа Учкуприк посвящена предоставлению современных знаний и навыков ученикам. Мы стремимся сделать процесс обучения интересным, эффективным и вдохновляющим.",
+    ic1t:"Целенаправленное обучение",ic1b:"Индивидуальный подход для развития интересов и потенциала каждого ученика.",
+    ic2t:"Развивающая среда",ic2b:"Здоровая образовательная среда, построенная на современном оборудовании и передовых методах обучения.",
+    ic3t:"Готовность к будущему",ic3b:"Подготовка к SAT и международным экзаменам, олимпиадам и выставкам.",
+    sliderTag:"Фотогалерея",sliderTitle:"Жизнь школы",
+    socialTag:"Социальные сети",socialTitle:"Подписывайтесь",
+    contactTag:"Контакты",contactTitle1:"Адрес",contactTitle2:"и контакты",
+    phoneKey:"Телефон",emailKey:"Электронная почта",addrKey:"Адрес",
+    hoursTitle:"Часы работы",wdDay:"Понедельник – Пятница",satDay:"Суббота",sunDay:"Воскресенье",closedTxt:"Выходной",
+    footTagline:"От хорошего к совершенству — на пути к знаниям и успеху.",
+    footNavHead:"Навигация",footContactHead:"Контакты",
+    "fl-home":"Главная","fl-gallery":"Галерея","fl-sat":"SAT","fl-news":"Новости","fl-ach":"Достижения","fl-adm":"Приём",
+    "nl-home":"Главная","nl-gallery":"Галерея","nl-sat":"SAT","nl-news":"Новости","nl-ach":"Достижения","nl-adm":"Приём",
+    rights:"Все права защищены",
+    ticker:["Знания","🌟","Творчество","🏆","Успех","🎯","Учкуприк ИМ","✨","От хорошего к лучшему","💫"]
+  },
+  en:{
+    short:"ENG",
+    heroBadge:"Fergana Region · 2026",
+    hw1:"From good",hw2:"—\u00a0to great!",
+    heroSub:"Uchkuprik Innovation School — knowledge, creativity, achievement. New horizons and opportunities for every student.",
+    ctaAdm:"Admission — 2026",ctaDl:"Portfolio",
+    s1:"Students",s2:"Teachers",s3:"Awards",
+    fc1:"150+ Awards",fc2:"Modern education",fc3:"Top school",
+    aboutTag:"About our school",aboutTitle:"Centre of knowledge\nand opportunity",
+    aboutCardLabel:"Our mission",aboutCardTitle:"Every student — a great future.",
+    aboutCardBody:"Uchkuprik Innovation School is dedicated to providing modern knowledge and skills to its students. We strive to make the learning process engaging, effective and inspiring.",
+    ic1t:"Targeted learning",ic1b:"An individual approach to developing each student's interests and potential.",
+    ic2t:"Growth environment",ic2b:"A healthy educational environment built with modern equipment and advanced teaching methods.",
+    ic3t:"Ready for the future",ic3b:"Preparation for SAT and international exams, olympiads and exhibitions.",
+    sliderTag:"Photo gallery",sliderTitle:"School life",
+    socialTag:"Social media",socialTitle:"Follow us",
+    contactTag:"Contact",contactTitle1:"Location",contactTitle2:"& contact",
+    phoneKey:"Phone",emailKey:"Email address",addrKey:"Address",
+    hoursTitle:"Working hours",wdDay:"Monday – Friday",satDay:"Saturday",sunDay:"Sunday",closedTxt:"Closed",
+    footTagline:"From good to excellence — on the path to knowledge and success.",
+    footNavHead:"Navigation",footContactHead:"Contact",
+    "fl-home":"Home","fl-gallery":"Gallery","fl-sat":"SAT","fl-news":"News","fl-ach":"Achievements","fl-adm":"Admission",
+    "nl-home":"Home","nl-gallery":"Gallery","nl-sat":"SAT","nl-news":"News","nl-ach":"Achievements","nl-adm":"Admission",
+    rights:"All rights reserved",
+    ticker:["Knowledge","🌟","Creativity","🏆","Achievement","🎯","Uchkuprik IM","✨","From Good to Great","💫"]
+  }
+};
+
+let curLangKey='uz';
+function setLang(k){
+  curLangKey=k;const t=T[k];
+  document.getElementById('curLang').textContent=t.short;
+  const plain=['heroBadge','heroSub','ctaAdm','ctaDl','s1','s2','s3','fc1','fc2','fc3',
+    'aboutTag','aboutCardLabel','aboutCardTitle','aboutCardBody',
+    'ic1t','ic1b','ic2t','ic2b','ic3t','ic3b',
+    'sliderTag','sliderTitle','socialTag','socialTitle',
+    'contactTag','contactTitle1','contactTitle2',
+    'phoneKey','emailKey','addrKey','hoursTitle','wdDay','satDay','sunDay','closedTxt',
+    'footTagline','footNavHead','footContactHead',
+    'fl-home','fl-gallery','fl-sat','fl-news','fl-ach','fl-adm',
+    'nl-home','nl-gallery','nl-sat','nl-news','nl-ach','nl-adm','rights'];
+  plain.forEach(id=>{const el=document.getElementById(id);if(el&&t[id])el.textContent=t[id]});
+  document.getElementById('hw1').textContent=t.hw1;
+  document.getElementById('hw2').textContent=t.hw2;
+  const at=document.getElementById('aboutTitle');
+  if(at)at.innerHTML=t.aboutTitle.replace('\n','<br>');
+  buildTicker(t.ticker);
+  document.getElementById('langDrop').classList.remove('open');
+}
+
+/* ── TICKER ── */
+function buildTicker(items){
+  const el=document.getElementById('tickerEl');
+  const chunk=items.map(w=>`<span class="t-item">${w}</span>`).join('');
+  el.innerHTML=chunk.repeat(4);
+}
+
+/* ── LANG TOGGLE ── */
+document.getElementById('langPill').addEventListener('click',e=>{
+  e.stopPropagation();
+  document.getElementById('langDrop').classList.toggle('open');
+});
+document.addEventListener('click',()=>document.getElementById('langDrop').classList.remove('open'));
+
+/* ── HAMBURGER ── */
+const hamBtn=document.getElementById('hamBtn'),mobScreen=document.getElementById('mobScreen');
+hamBtn.addEventListener('click',()=>{
+  mobScreen.classList.toggle('open');
+  const s=hamBtn.querySelectorAll('span');
+  if(mobScreen.classList.contains('open')){
+    s[0].style.transform='rotate(45deg) translateY(7px)';
+    s[1].style.opacity='0';s[1].style.transform='scaleX(0)';
+    s[2].style.transform='rotate(-45deg) translateY(-7px)';
+  }else{s.forEach(sp=>{sp.style.transform='';sp.style.opacity='';})}
+});
+
+/* ── HERO ENTRANCE ── */
+window.addEventListener('load',()=>{
+  buildTicker(T.uz.ticker);
+  setTimeout(()=>{
+    document.querySelectorAll('.word-wrap').forEach((el,i)=>{
+      setTimeout(()=>el.classList.add('show'),i*150);
+    });
+  },100);
+  setTimeout(()=>document.getElementById('heroSub').classList.add('show'),550);
+  setTimeout(()=>document.querySelector('.hero-cta').classList.add('show'),750);
+  setTimeout(()=>document.getElementById('statsRow').classList.add('show'),950);
+  setTimeout(()=>{const img=document.getElementById('heroImg');if(img)img.classList.add('expanded')},600);
+});
+
+/* ── SLIDER ── */
+let sIdx=0;
+const sTrack=document.getElementById('sTrack');
+const sDots=document.getElementById('sDots');
+const slides=sTrack.querySelectorAll('.slide-card');
+const sTotal=slides.length;
+const visCount=()=>window.innerWidth<640?1:window.innerWidth<960?2:3;
+document.getElementById('sTotal').textContent=sTotal;
+for(let i=0;i<sTotal;i++){
+  const d=document.createElement('div');d.className='sdot'+(i===0?' active':'');
+  d.onclick=(()=>{const idx=i;return()=>{sIdx=idx;showSlide();}})();
+  sDots.appendChild(d);
+}
+function showSlide(){
+  const cardW=slides[0].offsetWidth+20;
+  sTrack.style.transform=`translateX(-${sIdx*cardW}px)`;
+  sDots.querySelectorAll('.sdot').forEach((d,i)=>d.classList.toggle('active',i===sIdx));
+  document.getElementById('sCur').textContent=sIdx+1;
+}
+function nextSlide(){sIdx=Math.min(sIdx+1,sTotal-visCount());showSlide()}
+function prevSlide(){sIdx=Math.max(sIdx-1,0);showSlide()}
+setInterval(()=>{ if(sIdx>=sTotal-visCount()) sIdx=0; else sIdx++; showSlide(); },5000);
+
+/* ── REVEAL ── */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')});
+},{threshold:.1});
+document.querySelectorAll('.rev,.rev-l').forEach(el=>obs.observe(el));
+
+/* ── DOWNLOAD ── */
+function downloadFile(){
+  const a=document.createElement('a');
+  a.href='./school-portfolio/School-profile.pdf';
+  a.download='School-profile.pdf';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+}
+</script>
+</body>
+</html>
