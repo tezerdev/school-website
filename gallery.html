@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galereya — Uchko'prik IM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;0,700;1,300;1,600&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c0b09;
+  --bg2:#131210;
+  --bg3:#1a1814;
+  --surface:#201e1a;
+  --gold:#c8a84b;
+  --gold2:#e8d49a;
+  --cream:#f0ead8;
+  --muted:#6b6558;
+  --muted2:#9a9080;
+  --white:#faf6ed;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--cream);
+  font-family:'Syne',sans-serif;overflow-x:hidden;cursor:none;
+}
+#cursor{
+  position:fixed;width:10px;height:10px;
+  background:var(--gold);border-radius:50%;
+  pointer-events:none;z-index:99999;
+  transform:translate(-50%,-50%);
+  transition:width .25s,height .25s;
+  mix-blend-mode:difference;
+}
+#cursor.big{width:52px;height:52px;background:rgba(200,168,75,.15);border:1px solid var(--gold)}
+body::after{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:9998;opacity:.5;
+}
+
+/* NAV */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 52px;height:68px;
+  border-bottom:1px solid rgba(200,168,75,.1);
+  background:rgba(12,11,9,.75);
+  backdrop-filter:blur(24px) saturate(1.4);
+  -webkit-backdrop-filter:blur(24px);
+}
+.nav-logo{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--cream)}
+.nav-logo img{width:36px;height:36px;object-fit:contain;filter:brightness(.9)}
+.nav-logo-name{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--cream)}
+.nav-links{display:flex;gap:36px;list-style:none}
+.nav-links a{
+  font-size:12px;font-weight:500;letter-spacing:1.8px;text-transform:uppercase;
+  color:var(--muted2);text-decoration:none;transition:color .2s;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--gold)}
+.nav-r{display:flex;align-items:center;gap:12px;position:relative}
+.lang-btn{
+  font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--muted2);background:none;border:1px solid rgba(200,168,75,.25);
+  padding:7px 14px;border-radius:40px;cursor:none;transition:all .2s;position:relative;
+}
+.lang-btn:hover{border-color:var(--gold);color:var(--gold)}
+.lang-drop{
+  position:absolute;top:calc(100%+10px);right:0;
+  background:var(--surface);border:1px solid rgba(200,168,75,.15);
+  border-radius:12px;overflow:hidden;width:128px;
+  box-shadow:0 24px 48px rgba(0,0,0,.5);
+  opacity:0;visibility:hidden;transform:translateY(-10px);transition:all .22s;
+}
+.lang-drop.open{opacity:1;visibility:visible;transform:translateY(0)}
+.lang-drop a{
+  display:block;padding:11px 16px;font-size:13px;color:var(--muted2);
+  text-decoration:none;border-bottom:1px solid rgba(200,168,75,.08);transition:all .15s;
+}
+.lang-drop a:last-child{border:none}
+.lang-drop a:hover{background:var(--bg3);color:var(--gold);padding-left:22px}
+.ham{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:none;padding:6px}
+.ham span{display:block;width:22px;height:1.5px;background:var(--cream);transition:all .3s}
+.mob-menu{
+  position:fixed;inset:0;background:var(--bg);z-index:999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  opacity:0;visibility:hidden;transition:all .35s;
+}
+.mob-menu.open{opacity:1;visibility:visible}
+.mob-menu a{
+  font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:600;
+  color:rgba(240,234,216,.2);text-decoration:none;transition:all .25s;letter-spacing:-1px;line-height:1.2;
+}
+.mob-menu a:hover{color:var(--gold);letter-spacing:2px}
+
+/* PAGE HEADER */
+.page-hero{
+  min-height:42vh;display:flex;align-items:flex-end;
+  padding:120px 52px 56px;position:relative;overflow:hidden;
+  background:var(--bg2);
+  border-bottom:1px solid rgba(200,168,75,.08);
+}
+.page-hero::before{
+  content:'';position:absolute;
+  bottom:-120px;right:-120px;
+  width:560px;height:560px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,168,75,.06) 0%,transparent 65%);
+  pointer-events:none;
+}
+.page-hero-bg-text{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(100px,16vw,220px);font-weight:700;line-height:1;
+  color:rgba(200,168,75,.03);pointer-events:none;user-select:none;
+  white-space:nowrap;letter-spacing:-6px;
+}
+.page-hero-content{position:relative;z-index:1;width:100%}
+.page-eyebrow{
+  display:flex;align-items:center;gap:12px;margin-bottom:20px;
+  opacity:0;transform:translateY(20px);
+  transition:opacity .6s ease,transform .6s ease;
+}
+.page-eyebrow.in{opacity:1;transform:none}
+.page-eyebrow::before{content:'';width:32px;height:1px;background:var(--gold)}
+.page-eyebrow span{font-size:11px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold)}
+.page-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(56px,8vw,120px);
+  font-weight:600;letter-spacing:-3px;line-height:.88;
+  color:var(--white);
+  opacity:0;transform:translateY(30px);
+  transition:opacity .7s .1s ease,transform .7s .1s cubic-bezier(.16,1,.3,1);
+}
+.page-title.in{opacity:1;transform:none}
+.page-meta{
+  display:flex;align-items:baseline;gap:20px;
+  margin-top:24px;
+  opacity:0;transform:translateY(16px);
+  transition:opacity .6s .25s ease,transform .6s .25s ease;
+}
+.page-meta.in{opacity:1;transform:none}
+.page-count-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:32px;font-weight:300;color:var(--gold);letter-spacing:-1px;
+}
+.page-count-label{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+
+/* CATEGORY FILTER TABS */
+.filter-bar{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  padding:32px 52px 0;
+  max-width:1400px;margin:0 auto;
+}
+.filter-btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:9px 18px;border-radius:50px;
+  font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;
+  background:var(--bg2);border:1px solid rgba(200,168,75,.15);
+  color:var(--muted2);cursor:none;transition:all .2s;
+}
+.filter-btn:hover{border-color:var(--gold);color:var(--cream)}
+.filter-btn.active{background:var(--gold);border-color:var(--gold);color:var(--bg)}
+.filter-icon{font-size:14px}
+
+/* GALLERY CONTENT */
+.gallery-body{
+  max-width:1400px;margin:0 auto;
+  padding:48px 52px 100px;
+}
+
+/* CATEGORY BLOCK */
+.cat-block{
+  margin-bottom:72px;
+  opacity:0;transform:translateY(28px);
+  transition:opacity .7s ease,transform .7s cubic-bezier(.16,1,.3,1);
+}
+.cat-block.in{opacity:1;transform:none}
+
+.cat-block-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-bottom:16px;
+  border-bottom:1px solid rgba(200,168,75,.1);
+  margin-bottom:24px;
+  cursor:none;
+}
+.cat-block-l{display:flex;align-items:center;gap:14px}
+.cat-block-icon{
+  width:46px;height:46px;border-radius:14px;
+  background:var(--surface);border:1px solid rgba(200,168,75,.12);
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+}
+.cat-block-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:26px;font-weight:600;color:var(--white);
+  letter-spacing:-.5px;
+}
+.cat-block-count{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.cat-block-toggle{
+  display:flex;align-items:center;gap:8px;
+  font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--muted);cursor:none;
+  padding:8px 16px;border:1px solid rgba(200,168,75,.12);border-radius:50px;
+  background:none;transition:all .2s;
+}
+.cat-block-toggle:hover{border-color:var(--gold);color:var(--gold)}
+.cat-block-toggle svg{width:12px;height:12px;transition:transform .3s}
+.cat-block-toggle.collapsed svg{transform:rotate(-90deg)}
+
+/* MASONRY GRID */
+.masonry{
+  columns:3;column-gap:14px;
+  transition:opacity .3s ease;
+}
+.masonry.hidden{opacity:0;pointer-events:none;max-height:0;overflow:hidden}
+.masonry-item{
+  break-inside:avoid;margin-bottom:14px;
+  border-radius:18px;overflow:hidden;
+  position:relative;cursor:none;
+  background:var(--surface);
+}
+.masonry-item img{
+  width:100%;height:auto;display:block;
+  transition:transform .6s cubic-bezier(.4,0,.2,1),filter .4s ease;
+  filter:brightness(.85) saturate(.9);
+}
+.masonry-item:hover img{transform:scale(1.04);filter:brightness(.65) saturate(1.1)}
+.masonry-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 30%,rgba(12,11,9,.8) 100%);
+  opacity:0;transition:opacity .3s ease;
+  display:flex;align-items:flex-end;padding:20px;
+}
+.masonry-item:hover .masonry-overlay{opacity:1}
+.masonry-overlay-content{
+  display:flex;align-items:center;justify-content:space-between;width:100%;
+}
+.masonry-zoom{
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(200,168,75,.9);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.masonry-zoom svg{width:16px;height:16px;color:#0c0b09}
+.masonry-idx{
+  font-family:'Cormorant Garamond',serif;
+  font-size:28px;font-weight:300;color:rgba(240,234,216,.35);
+  line-height:1;letter-spacing:-1px;
+}
+
+/* EMPTY STATE */
+.empty-state{
+  text-align:center;padding:100px 20px;
+  color:var(--muted);
+}
+.empty-state p{font-size:14px;letter-spacing:1px}
+
+/* LOADING */
+.load-state{
+  display:flex;flex-direction:column;align-items:center;
+  gap:16px;padding:100px 20px;color:var(--muted);
+}
+.spinner{
+  width:28px;height:28px;border-radius:50%;
+  border:1.5px solid rgba(200,168,75,.15);
+  border-top-color:var(--gold);
+  animation:spin .7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* LIGHTBOX VIEWER */
+.viewer{
+  position:fixed;inset:0;z-index:9990;
+  background:rgba(8,7,6,.97);
+  opacity:0;visibility:hidden;
+  transition:opacity .3s ease;
+  display:flex;align-items:center;justify-content:center;
+}
+.viewer.open{opacity:1;visibility:visible}
+.viewer-stage{
+  position:relative;
+  max-width:92vw;max-height:92vh;
+  display:flex;align-items:center;justify-content:center;
+}
+.viewer-img{
+  max-width:88vw;max-height:88vh;
+  border-radius:18px;display:block;
+  transform:scale(.9) translateY(20px);opacity:0;
+  transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .3s ease;
+  box-shadow:0 60px 100px rgba(0,0,0,.8);
+}
+.viewer.open .viewer-img{transform:scale(1) translateY(0);opacity:1}
+.viewer-close{
+  position:fixed;top:28px;right:32px;
+  width:46px;height:46px;border-radius:50%;
+  background:var(--surface);border:1px solid rgba(200,168,75,.15);
+  display:flex;align-items:center;justify-content:center;
+  cursor:none;color:var(--muted2);transition:all .2s;z-index:10;
+}
+.viewer-close svg{width:18px;height:18px}
+.viewer-close:hover{background:var(--gold);color:var(--bg)}
+.viewer-nav{
+  position:fixed;top:50%;transform:translateY(-50%);
+  width:52px;height:52px;border-radius:50%;
+  background:var(--surface);border:1px solid rgba(200,168,75,.15);
+  display:flex;align-items:center;justify-content:center;
+  cursor:none;color:var(--muted2);font-size:22px;
+  transition:all .2s;z-index:10;
+}
+.viewer-nav:hover{background:var(--gold);color:var(--bg)}
+.viewer-prev{left:24px}
+.viewer-next{right:24px}
+.viewer-info{
+  position:fixed;bottom:28px;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:24px;z-index:10;
+}
+.viewer-counter{
+  font-family:'Cormorant Garamond',serif;
+  font-size:20px;color:var(--muted2);letter-spacing:-1px;
+}
+.viewer-counter b{color:var(--white);font-weight:600}
+.viewer-dots-wrap{display:flex;gap:5px;align-items:center}
+.vdot{
+  width:4px;height:4px;border-radius:50%;
+  background:rgba(200,168,75,.25);transition:all .25s;cursor:none;
+}
+.vdot.active{width:20px;border-radius:2px;background:var(--gold)}
+
+/* FOOTER */
+footer{
+  background:var(--bg2);border-top:1px solid rgba(200,168,75,.08);
+  padding:80px 52px 44px;position:relative;overflow:hidden;
+}
+footer::before{
+  content:'"';position:absolute;top:-60px;right:40px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:400px;font-weight:300;line-height:1;
+  color:rgba(200,168,75,.025);pointer-events:none;user-select:none;
+}
+.foot-grid{
+  max-width:1296px;margin:0 auto;
+  display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:72px;
+  padding-bottom:56px;border-bottom:1px solid rgba(200,168,75,.06);
+}
+.foot-brand{display:flex;flex-direction:column;gap:18px}
+.foot-logo{display:flex;align-items:center;gap:10px}
+.foot-logo img{width:38px;height:38px;opacity:.75}
+.foot-logo-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--white)}
+.foot-desc{font-size:13px;color:var(--muted);line-height:1.8;max-width:270px}
+.foot-socials{display:flex;gap:8px;margin-top:4px}
+.foot-soc{
+  width:36px;height:36px;border-radius:10px;border:1px solid rgba(200,168,75,.12);
+  background:none;display:flex;align-items:center;justify-content:center;cursor:none;transition:all .2s;
+}
+.foot-soc:hover{border-color:var(--gold);background:rgba(200,168,75,.1)}
+.foot-soc img{width:15px;height:15px;opacity:.45;filter:brightness(4)}
+.foot-soc:hover img{opacity:.9}
+.foot-col-head{font-size:11px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:22px}
+.foot-links{display:flex;flex-direction:column;gap:10px;list-style:none}
+.foot-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:all .18s}
+.foot-links a:hover{color:var(--cream);letter-spacing:.3px}
+.foot-contacts{display:flex;flex-direction:column;gap:10px}
+.foot-contact-item{display:flex;align-items:flex-start;gap:9px;font-size:12px;color:var(--muted);line-height:1.5}
+.foot-contact-item img{width:13px;height:13px;opacity:.3;filter:brightness(4);margin-top:2px;flex-shrink:0}
+.foot-bottom{max-width:1296px;margin:32px auto 0;display:flex;align-items:center;justify-content:space-between}
+.foot-copy{font-size:12px;color:var(--muted);letter-spacing:.3px}
+
+/* MOBILE */
+@media(max-width:960px){
+  .nav{padding:0 20px}
+  .nav-links{display:none}
+  .ham{display:flex}
+  .page-hero{padding:100px 24px 48px}
+  .filter-bar{padding:24px 24px 0}
+  .gallery-body{padding:36px 24px 72px}
+  .masonry{columns:2}
+  .viewer-prev{left:10px}
+  .viewer-next{right:10px}
+  footer{padding:60px 24px 36px}
+  .foot-grid{grid-template-columns:1fr;gap:40px}
+  .foot-bottom{flex-direction:column;gap:8px;text-align:center}
+  body{cursor:auto}
+  #cursor{display:none}
+}
+@media(max-width:520px){
+  .masonry{columns:1}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <img src="./images/logo.png" alt="Logo">
+    <span class="nav-logo-name">Uchko'prik IM</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" id="nl-home">Asosiy</a></li>
+    <li><a href="gallery.html" class="active" id="nl-gallery">Galereya</a></li>
+    <li><a href="#" id="nl-sat">SAT</a></li>
+    <li><a href="#" id="nl-news">Yangiliklar</a></li>
+    <li><a href="#" id="nl-ach">Yutuqlar</a></li>
+    <li><a href="#" id="nl-adm">Qabul</a></li>
+  </ul>
+  <div class="nav-r">
+    <button class="lang-btn" id="langBtn">
+      <span id="curLang">O'zbek</span>
+      <div class="lang-drop" id="langDrop">
+        <a href="#" onclick="setLang('uz');return false">O'zbek</a>
+        <a href="#" onclick="setLang('ru');return false">Русский</a>
+        <a href="#" onclick="setLang('en');return false">English</a>
+      </div>
+    </button>
+    <button class="ham" id="hamBtn" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mob-menu" id="mobMenu">
+  <a href="index.html">Asosiy</a>
+  <a href="gallery.html">Galereya</a>
+  <a href="#">SAT</a>
+  <a href="#">Yangiliklar</a>
+  <a href="#">Yutuqlar</a>
+  <a href="#">Qabul</a>
+</div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-bg-text" aria-hidden="true">Galereya</div>
+  <div class="page-hero-content">
+    <div class="page-eyebrow" id="pageEyebrow">
+      <span id="eyebrowText">Maktab hayoti</span>
+    </div>
+    <h1 class="page-title" id="pageTitle">Galereya</h1>
+    <div class="page-meta" id="pageMeta">
+      <span class="page-count-num" id="totalCount">—</span>
+      <span class="page-count-label" id="countLabel">rasm</span>
+    </div>
+  </div>
+</div>
+
+<!-- FILTER TABS -->
+<div class="filter-bar" id="filterBar">
+  <button class="filter-btn active" data-cat="all" onclick="filterCat('all',this)">
+    <span class="filter-icon">✦</span> <span id="filterAll">Barchasi</span>
+  </button>
+</div>
+
+<!-- GALLERY BODY -->
+<div class="gallery-body" id="galleryBody">
+  <div class="load-state">
+    <div class="spinner"></div>
+    <p style="font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)" id="loadingText">Yuklanmoqda</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <div class="foot-logo">
+        <img src="./images/logo.png" alt="">
+        <span class="foot-logo-name">Uchko'prik IM</span>
+      </div>
+      <p class="foot-desc" id="footDesc">Yaxshidan yetuklikka — bilim, ijod va muvaffaqiyat yo'lida.</p>
+      <div class="foot-socials">
+        <button class="foot-soc" onclick="window.open('https://t.me/PTMAUZ','_blank')"><img src="./icons/telegram.svg" alt=""></button>
+        <button class="foot-soc"><img src="./icons/facebook.svg" alt=""></button>
+        <button class="foot-soc"><img src="./icons/instagram.svg" alt=""></button>
+        <button class="foot-soc"><img src="./icons/youtube.svg" alt=""></button>
+      </div>
+    </div>
+    <div>
+      <div class="foot-col-head" id="footNav">Navigatsiya</div>
+      <ul class="foot-links">
+        <li><a href="index.html" id="fl-home">Asosiy</a></li>
+        <li><a href="gallery.html" id="fl-gallery">Galereya</a></li>
+        <li><a href="#" id="fl-sat">SAT</a></li>
+        <li><a href="#" id="fl-news">Yangiliklar</a></li>
+        <li><a href="#" id="fl-ach">Yutuqlarimiz</a></li>
+        <li><a href="https://t.me/PTMAUZ/6128" id="fl-adm">Qabul</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-col-head" id="footContact">Aloqa</div>
+      <div class="foot-contacts">
+        <div class="foot-contact-item"><img src="./icons/telephone.svg" alt=""> +998 (91) 205 72 16</div>
+        <div class="foot-contact-item"><img src="./icons/envelope.svg" alt=""> UchkuprikIM@gmail.com</div>
+        <div class="foot-contact-item"><img src="./icons/geo-alt.svg" alt=""> Farg'ona vil. Uchko'prik tum. Sog'lom avlod, 14</div>
+        <div class="foot-contact-item"><img src="./icons/send.svg" alt=""> @PTMAUZ Telegram kanali</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span class="foot-copy">© 2026 Uchkuprik IM</span>
+    <span class="foot-copy" id="rights">Barcha huquqlar himoyalangan</span>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="viewer" id="viewer">
+  <button class="viewer-close" onclick="closeViewer()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+  </button>
+  <button class="viewer-nav viewer-prev" onclick="navImg(-1)">‹</button>
+  <button class="viewer-nav viewer-next" onclick="navImg(1)">›</button>
+  <div class="viewer-stage">
+    <img id="viewerImg" src="" alt="" class="viewer-img">
+  </div>
+  <div class="viewer-info">
+    <div class="viewer-counter"><b id="vCur">1</b> / <span id="vTot">1</span></div>
+    <div class="viewer-dots-wrap" id="vDots"></div>
+  </div>
+</div>
+
+<script>
+/* ── CURSOR ── */
+const cur=document.getElementById('cursor');
+let mx=0,my=0,cx=0,cy=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function animCur(){
+  cx+=(mx-cx)*.18;cy+=(my-cy)*.18;
+  cur.style.left=cx+'px';cur.style.top=cy+'px';
+  requestAnimationFrame(animCur);
+})();
+
+/* ── LANG ── */
+const LANG={
+  uz:{lang:"O'zbek",eyebrowText:"Maktab hayoti",pageTitle:"Galereya",countLabel:"rasm",
+    filterAll:"Barchasi",loadingText:"Yuklanmoqda",
+    campus:"Kampus",students:"O'quvchilar",football:"Futbol klubi",events:"Tadbirlar",
+    showLabel:"Ko'rish",hideLabel:"Yashirish",
+    footDesc:"Yaxshidan yetuklikka — bilim, ijod va muvaffaqiyat yo'lida.",
+    footNav:"Navigatsiya",footContact:"Aloqa",
+    "fl-home":"Asosiy","fl-gallery":"Galereya","fl-sat":"SAT","fl-news":"Yangiliklar","fl-ach":"Yutuqlarimiz","fl-adm":"Qabul",
+    "nl-home":"Asosiy","nl-gallery":"Galereya","nl-sat":"SAT","nl-news":"Yangiliklar","nl-ach":"Yutuqlar","nl-adm":"Qabul",
+    rights:"Barcha huquqlar himoyalangan"},
+  ru:{lang:"Русский",eyebrowText:"Жизнь школы",pageTitle:"Галерея",countLabel:"фото",
+    filterAll:"Все",loadingText:"Загрузка",
+    campus:"Кампус",students:"Ученики",football:"Футбольный клуб",events:"Мероприятия",
+    showLabel:"Показать",hideLabel:"Скрыть",
+    footDesc:"От хорошего к совершенству — на пути к знаниям и успеху.",
+    footNav:"Навигация",footContact:"Контакты",
+    "fl-home":"Главная","fl-gallery":"Галерея","fl-sat":"SAT","fl-news":"Новости","fl-ach":"Достижения","fl-adm":"Приём",
+    "nl-home":"Главная","nl-gallery":"Галерея","nl-sat":"SAT","nl-news":"Новости","nl-ach":"Достижения","nl-adm":"Приём",
+    rights:"Все права защищены"},
+  en:{lang:"English",eyebrowText:"School life",pageTitle:"Gallery",countLabel:"photos",
+    filterAll:"All",loadingText:"Loading",
+    campus:"Campus",students:"Students",football:"Football club",events:"Events",
+    showLabel:"Show",hideLabel:"Hide",
+    footDesc:"From good to excellence — on the path to knowledge and success.",
+    footNav:"Navigation",footContact:"Contact",
+    "fl-home":"Home","fl-gallery":"Gallery","fl-sat":"SAT","fl-news":"News","fl-ach":"Achievements","fl-adm":"Admission",
+    "nl-home":"Home","nl-gallery":"Gallery","nl-sat":"SAT","nl-news":"News","nl-ach":"Achievements","nl-adm":"Admission",
+    rights:"All rights reserved"}
+};
+let curLangKey='uz';
+function setLang(k){
+  curLangKey=k;
+  const t=LANG[k];
+  document.getElementById('curLang').textContent=t.lang;
+  const ids=['eyebrowText','pageTitle','countLabel','filterAll','loadingText',
+    'footDesc','footNav','footContact','fl-home','fl-gallery','fl-sat','fl-news','fl-ach','fl-adm',
+    'nl-home','nl-gallery','nl-sat','nl-news','nl-ach','nl-adm','rights'];
+  ids.forEach(id=>{const el=document.getElementById(id);if(el&&t[id])el.textContent=t[id]});
+  document.querySelectorAll('.cat-name-text').forEach(el=>{
+    const key=el.dataset.key;if(t[key])el.textContent=t[key];
+  });
+  document.querySelectorAll('.cat-filter-label').forEach(el=>{
+    const key=el.dataset.key;if(t[key])el.textContent=t[key];
+  });
+  document.getElementById('langDrop').classList.remove('open');
+}
+
+/* ── LANG TOGGLE ── */
+document.getElementById('langBtn').addEventListener('click',e=>{
+  e.stopPropagation();
+  document.getElementById('langDrop').classList.toggle('open');
+});
+document.addEventListener('click',()=>document.getElementById('langDrop').classList.remove('open'));
+
+/* ── HAMBURGER ── */
+const hamBtn=document.getElementById('hamBtn');
+const mobMenu=document.getElementById('mobMenu');
+hamBtn.addEventListener('click',()=>{
+  mobMenu.classList.toggle('open');
+  const s=hamBtn.querySelectorAll('span');
+  if(mobMenu.classList.contains('open')){
+    s[0].style.transform='rotate(45deg) translateY(5.5px)';
+    s[1].style.opacity='0';s[2].style.transform='rotate(-45deg) translateY(-5.5px)';
+  }else{s[0].style.transform='';s[1].style.opacity='';s[2].style.transform='';}
+});
+
+/* ── GALLERY DATA ── */
+const CATS=[
+  {key:'kampus',folder:'kampus',icon:'🏫',langKey:'campus'},
+  {key:"o'quvchilar",folder:"o'quvchilar",icon:'📚',langKey:'students'},
+  {key:'football',folder:'football',icon:'⚽',langKey:'football'},
+  {key:'tadbirlar',folder:'tadbirlar',icon:'🎉',langKey:'events'},
+];
+let allImages=[];
+let viewerImages=[];
+let vIdx=0;
+let collapsedCats=new Set();
+
+function loadImagesFromFolder(folder){
+  return new Promise(resolve=>{
+    const urls=[];let idx=1,misses=0;
+    const maxIdx=30,maxMisses=3;
+    function next(){
+      if(idx>maxIdx||misses>=maxMisses){resolve(urls);return}
+      const url=`./gallery-images/${encodeURIComponent(folder)}/${idx}.jpg`;
+      const img=new Image();
+      img.onload=()=>{urls.push(url);misses=0;idx++;next()};
+      img.onerror=()=>{misses++;idx++;next()};
+      img.src=url;
+    }
+    next();
+  });
+}
+
+async function loadGallery(){
+  const body=document.getElementById('galleryBody');
+  const sections=await Promise.all(CATS.map(async c=>{
+    const images=await loadImagesFromFolder(c.folder);
+    return{...c,images};
+  }));
+
+  allImages=sections.flatMap(s=>s.images);
+  viewerImages=allImages;
+
+  const count=document.getElementById('totalCount');
+  count.textContent=allImages.length;
+
+  if(allImages.length===0){
+    body.innerHTML='<div class="empty-state"><p>Rasmlar topilmadi.</p></div>';
+    return;
+  }
+
+  // Build filter buttons
+  const bar=document.getElementById('filterBar');
+  sections.filter(s=>s.images.length>0).forEach(s=>{
+    const t=LANG[curLangKey];
+    const btn=document.createElement('button');
+    btn.className='filter-btn';
+    btn.dataset.cat=s.key;
+    btn.innerHTML=`<span class="filter-icon">${s.icon}</span> <span class="cat-filter-label" data-key="${s.langKey}">${t[s.langKey]||s.langKey}</span>`;
+    btn.onclick=function(){filterCat(s.key,this)};
+    bar.appendChild(btn);
+  });
+
+  // Build category blocks
+  body.innerHTML='';
+  sections.filter(s=>s.images.length>0).forEach((s,si)=>{
+    const t=LANG[curLangKey];
+    const block=document.createElement('div');
+    block.className='cat-block';
+    block.dataset.cat=s.key;
+
+    const catImageList=s.images;
+    const masHtml=catImageList.map((url,i)=>`
+      <div class="masonry-item" onclick="openImg(${allImages.indexOf(url)})">
+        <img src="${url}" alt="" loading="lazy">
+        <div class="masonry-overlay">
+          <div class="masonry-overlay-content">
+            <span class="masonry-idx">${String(i+1).padStart(2,'0')}</span>
+            <div class="masonry-zoom">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>`).join('');
+
+    block.innerHTML=`
+      <div class="cat-block-head" onclick="toggleCatBlock('${s.key}',this)">
+        <div class="cat-block-l">
+          <div class="cat-block-icon">${s.icon}</div>
+          <div>
+            <div class="cat-block-name"><span class="cat-name-text" data-key="${s.langKey}">${t[s.langKey]||s.langKey}</span></div>
+            <div class="cat-block-count">${catImageList.length} ${t.countLabel}</div>
+          </div>
+        </div>
+        <button class="cat-block-toggle" tabindex="-1">
+          <span class="cat-toggle-text">${t.hideLabel||'Yashirish'}</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+        </button>
+      </div>
+      <div class="masonry" id="masonry-${s.key}">${masHtml}</div>`;
+
+    body.appendChild(block);
+
+    // staggered reveal
+    setTimeout(()=>block.classList.add('in'),si*120);
+  });
+
+  // cursor on new items
+  document.querySelectorAll('.masonry-item,.cat-block-head,.cat-block-toggle').forEach(el=>{
+    el.addEventListener('mouseenter',()=>cur.classList.add('big'));
+    el.addEventListener('mouseleave',()=>cur.classList.remove('big'));
+  });
+
+  // Scroll reveal
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')});
+  },{threshold:.08});
+  document.querySelectorAll('.cat-block').forEach(el=>obs.observe(el));
+
+  // Hero in
+  document.getElementById('pageEyebrow').classList.add('in');
+  document.getElementById('pageTitle').classList.add('in');
+  document.getElementById('pageMeta').classList.add('in');
+
+  // build viewer dots (max 12 visible)
+  rebuildViewerDots();
+}
+
+function toggleCatBlock(key,headEl){
+  const masonry=document.getElementById('masonry-'+key);
+  const toggleBtn=headEl.querySelector('.cat-block-toggle');
+  const toggleText=headEl.querySelector('.cat-toggle-text');
+  const t=LANG[curLangKey];
+  if(collapsedCats.has(key)){
+    collapsedCats.delete(key);
+    masonry.classList.remove('hidden');
+    toggleBtn.classList.remove('collapsed');
+    if(toggleText)toggleText.textContent=t.hideLabel||'Yashirish';
+  }else{
+    collapsedCats.add(key);
+    masonry.classList.add('hidden');
+    toggleBtn.classList.add('collapsed');
+    if(toggleText)toggleText.textContent=t.showLabel||'Ko\'rish';
+  }
+}
+
+function filterCat(cat,btnEl){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btnEl.classList.add('active');
+  document.querySelectorAll('.cat-block').forEach(block=>{
+    if(cat==='all'||block.dataset.cat===cat){
+      block.style.display='';
+    }else{
+      block.style.display='none';
+    }
+  });
+}
+
+/* ── VIEWER ── */
+function rebuildViewerDots(){
+  const wrap=document.getElementById('vDots');
+  wrap.innerHTML='';
+  const max=Math.min(viewerImages.length,16);
+  for(let i=0;i<max;i++){
+    const d=document.createElement('div');
+    d.className='vdot'+(i===vIdx?' active':'');
+    d.onclick=(()=>{const idx=i;return()=>{vIdx=idx;showViewerImg();}})();
+    wrap.appendChild(d);
+  }
+}
+
+function updateViewerDots(){
+  const dots=document.querySelectorAll('.vdot');
+  const max=dots.length;
+  dots.forEach((d,i)=>d.classList.toggle('active',i===vIdx%max));
+}
+
+function showViewerImg(){
+  const img=document.getElementById('viewerImg');
+  img.style.opacity='0';img.style.transform='scale(.95) translateY(10px)';
+  setTimeout(()=>{
+    img.src=viewerImages[vIdx];
+    img.onload=()=>{
+      img.style.transition='transform .4s cubic-bezier(.16,1,.3,1),opacity .3s ease';
+      img.style.opacity='1';img.style.transform='scale(1) translateY(0)';
+    };
+  },120);
+  document.getElementById('vCur').textContent=vIdx+1;
+  document.getElementById('vTot').textContent=viewerImages.length;
+  updateViewerDots();
+}
+
+function openImg(idx){
+  vIdx=idx;
+  viewerImages=allImages;
+  rebuildViewerDots();
+  const img=document.getElementById('viewerImg');
+  img.src=viewerImages[vIdx];
+  document.getElementById('vCur').textContent=vIdx+1;
+  document.getElementById('vTot').textContent=viewerImages.length;
+  document.getElementById('viewer').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeViewer(){
+  document.getElementById('viewer').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function navImg(dir){
+  vIdx=(vIdx+dir+viewerImages.length)%viewerImages.length;
+  showViewerImg();
+}
+
+document.getElementById('viewer').addEventListener('click',function(e){
+  if(e.target===this)closeViewer();
+});
+
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('viewer').classList.contains('open'))return;
+  if(e.key==='Escape')closeViewer();
+  if(e.key==='ArrowRight')navImg(1);
+  if(e.key==='ArrowLeft')navImg(-1);
+});
+
+/* ── INIT ── */
+window.addEventListener('load',loadGallery);
+
+// Page hero animate on load
+setTimeout(()=>{
+  document.getElementById('pageEyebrow').classList.add('in');
+  document.getElementById('pageTitle').classList.add('in');
+  document.getElementById('pageMeta').classList.add('in');
+},100);
+</script>
+</body>
+</html>
