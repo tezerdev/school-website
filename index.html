@@ -393,7 +393,12 @@ body::after{
   display:flex;align-items:center;justify-content:center;
   border:1px solid rgba(200,168,75,.1);
 }
-.contact-ico img{width:15px;height:15px;opacity:.5;filter:brightness(2.5) sepia(.8) hue-rotate(10deg)}
+.contact-ico img{
+  width:15px;
+  height:15px;
+  opacity:1;
+  filter:brightness(0) invert(1);
+}  
 .contact-val{
   font-size:14px;color:var(--cream);line-height:1.5;
 }
@@ -497,7 +502,14 @@ footer::before{
   display:flex;align-items:flex-start;gap:9px;
   font-size:12px;color:var(--muted);line-height:1.5;
 }
-.foot-contact-item img{width:13px;height:13px;opacity:.3;filter:brightness(4);margin-top:2px;flex-shrink:0}
+.foot-contact-item img{
+  width:13px;
+  height:13px;
+  opacity:1;
+  filter:brightness(0) invert(1);
+  margin-top:2px;
+  flex-shrink:0;
+}
 .foot-bottom{
   max-width:1296px;margin:32px auto 0;
   display:flex;align-items:center;justify-content:space-between;
@@ -583,7 +595,7 @@ footer::before{
 <!-- HERO -->
 <section class="hero">
   <div class="hero-l">
-    <div class="hero-number" aria-hidden="true">01</div>
+    <div class="hero-number" aria-hidden="true">IM</div>
 
     <div class="hero-tag">
       <span class="hero-tag-dot"></span>
